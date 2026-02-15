@@ -1,0 +1,17 @@
+pre-commit:
+  commands:
+    eslint:
+      glob: '*.{js,jsx,ts,tsx}'
+      run: export NODE_OPTIONS=--max-old-space-size=8192 && npx eslint --fix --quiet {staged_files} && git add {staged_files}
+    prettier:
+      glob: '*.{js,css,scss,ts,tsx,json,html,md}'
+      run: npx prettier --write {staged_files} && git add {staged_files}
+    styles:
+      glob: '*.{css,scss}'
+      run: npx stylelint --allow-empty-input --fix {staged_files} && git add {staged_files}
+    type-check-app:
+      glob: 'packages/app/**/*.{ts,tsx}'
+      run: cd packages/app && npm run type-check
+    typograf-locales:
+      glob: 'packages/app/**'
+      run: cd packages/app && npm run typograf-locales && cd ../../ && git add {staged_files}

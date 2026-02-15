@@ -1,0 +1,81 @@
+<style>
+  html.animation-disabled,
+  html.animation-disabled *,
+  html.animation-disabled *::before,
+  html.animation-disabled *::after,
+  html.animation-disabled [style] {
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    animation-play-state: paused !important;
+    animation-timeline: none !important;
+    animation-fill-mode: none !important;
+    animation-direction: normal !important;
+    animation-timing-function: linear !important;
+    transition: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    transition-property: none !important;
+    transition-timing-function: linear !important;
+    transition-behavior: normal !important;
+    scroll-behavior: auto !important;
+    caret-color: transparent !important;
+    scroll-timeline: none !important;
+    view-timeline-name: none !important;
+  }
+
+  video[autoplay],
+  video[loop] {
+    animation: none !important;
+  }
+
+  body {
+    background-color: var(--b2bColorsSurfaceLevel10);
+    color: var(--b2bColorsTextBase90);
+  }
+</style>
+
+<script>
+  var iframe = document.location && document.location.ancestorOrigins && document.location.ancestorOrigins.length;
+  var isOpenedFromStorybook = document.referrer && document.referrer.indexOf('?path=/story') !== -1;
+
+  if (!iframe && !isOpenedFromStorybook) {
+    document.documentElement.classList.add('animation-disabled');
+
+    try {
+      Element.prototype.scrollIntoView = function () {};
+    } catch (e) {}
+  }
+
+  // эмуляция prefers-reduced-motion: reduce — некоторые либы ориентируются на него
+  var orig = window.matchMedia;
+  window.matchMedia = function (q) {
+    if (/\(prefers-reduced-motion:\s*reduce\)/i.test(q)) {
+      return {
+        matches: true,
+        media: q,
+        onchange: null,
+        addListener: function () {},
+        removeListener: function () {},
+        addEventListener: function () {},
+        removeEventListener: function () {},
+        dispatchEvent: function () {
+          return false;
+        },
+      };
+    }
+    return orig ? orig(q) : {matches: false, media: q};
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    requestAnimationFrame(() => {
+      const elements = document.querySelectorAll('*');
+      elements.forEach((el) => {
+        el.style.animation = 'none';
+        el.style.transition = 'none';
+      });
+    });
+  });
+</script>

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "baseUrl": ".",
+    "types": ["node"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "paths": {
+      "@common/*": ["./common/*"],
+      "@utils/*": ["./utils/*"],
+      "@ui-kit/*": ["./ui-kit/*"],
+      "@basics/*": ["./basics/*"],
+      "@external-services/*": ["./external-services/*"],
+      "@example/*": ["./_example_/*"],
+      "@vk-store-web-dev-console/*": ["./vk-store-web-dev-console/*"],
+      "@vk-web-admin/*": ["./vk-web-admin/*"],
+      "@tools/*": ["./tools/*"],
+      "@hub/*": ["./hub/*"],
+      "@adminApp/*": ["../../apps/vk-web-admin/src/*"],
+      "@consoleApp/*": ["../../apps/vk-store-web-dev-console/src/*"],
+      "@toolsApp/*": ["../../apps/toolbox-web/src/*"],
+      "@hubApp/*": ["../../apps/hub/*"]
+    },
+    "noImplicitAny": false
+  }
+}

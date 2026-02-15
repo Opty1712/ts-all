@@ -1,0 +1,22 @@
+# global excludes
+node_modules
+package-lock.lock
+*.md
+*.json
+.*
+*.html
+*.woff
+*.woff2
+*.ttf
+*.png
+*.sh
+*.cur
+
+dist/
+build/
+coverage/
+lib/
+storybook-static/
+
+packages/ui-kit/src/styles/generated
+packages/icons/src/system/templates/style.css

@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+@layer components {
+  /* !!!строку ниже «importIconFontCSS» - не трогать, это импорт иконочного шрифта, будет заменено в процессе парсинга, !!! */
+
+  /* importIconFontCSS */
+}

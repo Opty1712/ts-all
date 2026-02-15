@@ -1,0 +1,15 @@
+coverage/
+dist/
+build/
+lib/
+*.css.d.ts
+reports/
+/.vscode
+
+
+packages/ui-kit/src/styles/generated
+packages/icons/src/generatedTypes.ts
+packages/icons/src/system/templates/style.css
+packages/common-utils/scripts/
+storybook-static/
+

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "preserveWatchOutput": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "useUnknownInCatchVariables": false,
+    "baseUrl": ".",
+    "types": ["react", "node"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "ES2021.String"],
+    "jsx": "react-jsx",
+    "useDefineForClassFields": true,
+    "target": "ES2020"
+  },
+  "exclude": ["node_modules", "dist", "lib", "build", "coverage", "report"]
+}

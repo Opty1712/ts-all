@@ -1,0 +1,18 @@
+{
+  "name": "@demo/app",
+  "description": "Типовое frontend приложение",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "dev:backend": "tsx dev-server/server.ts",
+    "dev:frontend": "npm run typed-css:dev & vite --force",
+    "dev": "npm run dev:frontend & npm run dev:backend",
+    "storybook": "storybook dev -p 6006",
+    "type-check": "npm run typed-css && tsc --noEmit",
+    "typed-css": "tcm src --silent && node ../../packages/common-utils/scripts/generateCssDtsMaps.js",
+    "typed-css:dev": "node ../../packages/common-utils/scripts/generateCssDtsMaps.js --watch & tcm src --watch --silent",
+    "typed-css:remove": "find . -type f \\( -name \"*.module.css.d.ts\" -o -name \"*.module.css.d.ts.map\" \\) -not -path \"./node_modules/*\" -not -path \"./dist/*\" -not -path \"./build/*\" -delete",
+    "typograf-locales": "tsx scripts/typograf-locales.ts"
+  }
+}

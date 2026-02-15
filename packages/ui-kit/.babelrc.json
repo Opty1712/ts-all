@@ -1,0 +1,18 @@
+{
+  "sourceType": "unambiguous",
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "chrome": 67,
+          "safari": 11,
+          "firefox": 60,
+          "edge": 17
+        }
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
+}

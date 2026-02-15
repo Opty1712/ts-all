@@ -1,0 +1,44 @@
+import React, { DetailedHTMLProps, FC } from "react";
+
+import { 
+  {{ fontname }}
+ } from "./generatedTypes";
+import styles from "./styles.module.css";
+
+type IconSet = Record<
+  keyof typeof {{ fontname }},
+  FC<DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>>
+>;
+
+function getKeys<T extends Record<string | number | symbol, unknown>>(
+  object: T
+): Array<keyof T> {
+  return Object.keys(object) as Array<keyof T>;
+}
+
+const capsAndDigits = /(\d+|[A-Z])/g;
+
+const getIconSet = () => {
+  const iconSet = getKeys( {{ fontname }} ).reduce<IconSet>((accumulator, name) => {
+    const a11yName = name.replace(capsAndDigits, " $&");
+
+    accumulator[name] = ({ className = "", ...props }) => {
+      return (
+        <>
+          <i
+            aria-hidden="true"
+            {...props}
+            className={`${ {{ fontname }} [name]} ${className}`}
+          />
+          <span className={styles.srOnly}>{a11yName}</span>
+        </>
+      );
+    };
+
+    return accumulator;
+  }, {} as IconSet);
+
+  return iconSet;
+};
+
+const icons = getIconSet();

@@ -1,0 +1,20 @@
+/* Смотрите образец тут оформления тут https://github.com/jaywcjlove/svgtofont/blob/master/examples/templates/styles/_%7B%7Bfilename%7D%7D.css.template */
+@font-face {
+{{fontFamily}}
+}
+
+{% if nameAsUnicode %}.{{prefix}}{% else %}[class^="{{prefix}}-"], [class*=" {{prefix}}-"]{% endif %} {
+  font-family: '{{fontname}}' !important;{{fontSize}}
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="{{prefix}}-"][class*="_12"] {font-size: 12px;}
+[class^="{{prefix}}-"][class*="_16"] {font-size: 16px;}
+[class^="{{prefix}}-"][class*="_20"] {font-size: 20px;}
+[class^="{{prefix}}-"][class*="_24"] {font-size: 24px;}
+
+{% if not nameAsUnicode %}
+{{cssString}}
+{% endif %}

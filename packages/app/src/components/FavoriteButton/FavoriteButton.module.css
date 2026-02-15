@@ -1,0 +1,19 @@
+/* немного красоты */
+
+.favoriteButton {
+  margin-left: var(--spacingXS);
+  padding: var(--spacingXXS);
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: var(--borderRadiusM);
+  background: transparent;
+  color: var(--b2bColorsIconBase20);
+  line-height: 0;
+  transition: color 0.15s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--b2bColorsIconAccent);
+  }
+}

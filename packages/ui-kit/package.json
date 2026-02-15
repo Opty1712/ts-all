@@ -1,0 +1,33 @@
+{
+  "name": "@demo/ui-kit",
+  "version": "1.0.0",
+  "description": "Демо Ui-kit для веб проектов",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rimraf dist lib libTmp",
+    "dev": "npm run css && npm run tailwind:watch & npm run typed-css:dev & npm run watch & storybook dev -p 6006",
+    "watch": "cross-env NODE_ENV=development vite build --watch & nodemon --watch dist scripts/copyDistToLib.js",
+    "build": "npm run clean && npm run css && npm run tailwind:build && npm run typed-css && vite build && node scripts/copyDistToLib.js && npm run generate:css-vars-autocomplete --prefix ../..",
+    "typed-css": "tcm src --silent && node ../../packages/common-utils/scripts/generateCssDtsMaps.js",
+    "typed-css:dev": "node ../../packages/common-utils/scripts/generateCssDtsMaps.js --watch & tcm src --watch --silent",
+    "typed-css:remove": "find . -type f \\( -name \"*.module.css.d.ts\" -o -name \"*.module.css.d.ts.map\" \\) -not -path \"./node_modules/*\" -not -path \"./dist/*\" -not -path \"./build/*\" -delete",
+    "tailwind:build": "npx tailwindcss -i ./src/styles/generated/tailwindInitialFile.css -o ./src/styles/generated/tailwindOutputFile.css",
+    "tailwind:watch": "npx tailwindcss -i ./src/styles/generated/tailwindInitialFile.css -o ./src/styles/generated/tailwindOutputFile.css --watch",
+    "css": "node src/styles",
+    "type-check": "tsc --noEmit"
+  },
+  "browserslist": [
+    "chrome 88",
+    "and_chr 88",
+    "ios_saf 15.4",
+    "safari 15.4",
+    "ff 85",
+    "edge 88"
+  ]
+}

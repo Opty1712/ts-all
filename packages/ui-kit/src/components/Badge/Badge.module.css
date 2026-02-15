@@ -1,0 +1,7 @@
+.badgeText {
+  @apply pl-spacingXXS text-b2bColorsTextBase20;
+}
+
+.root {
+  @apply flex items-center;
+}

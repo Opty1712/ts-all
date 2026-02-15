@@ -1,0 +1,22 @@
+{
+  "name": "@demo/icons",
+  "version": "1.0.0",
+  "description": "Демо иконки для веб проектов",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "build": "npm run clear && npm run check429 && npm run icons:import && npm run icons:generate && vite build && npm run clear:tmp",
+    "clear": "npm run clear:dist && npm run clear:tmp",
+    "clear:dist": "rimraf dist",
+    "clear:tmp": "rimraf tmp",
+    "icons:import": "figma-export use-config",
+    "icons:generate": "tsx src/system/generate.mts",
+    "check429": "tsx src/system/check-figma-429.mts",
+    "start": "serve dist"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@demo/common-utils",
+  "version": "1.0.0",
+  "description": "Пакет, содержащий в себе утилиты и константы, переиспользуемые в основных проектах",
+  "private": true,
+  "author": "Andrey Edunov",
+  "license": "ISC",
+  "types": "dist/src/index.d.ts",
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "type-check": "tsc --noEmit"
+  }
+}

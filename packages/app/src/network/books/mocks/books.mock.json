@@ -1,0 +1,30 @@
+[
+  {"id": "101", "authorId": "1", "title": "1984", "year": 1949, "priceKopecks": 89000, "isFavorite": true},
+  {"id": "102", "authorId": "1", "title": "Animal Farm", "year": 1945, "priceKopecks": 76000, "isFavorite": false},
+  {
+    "id": "103",
+    "authorId": "1",
+    "title": "Homage to Catalonia",
+    "year": 1938,
+    "priceKopecks": 94000,
+    "isFavorite": false
+  },
+  {
+    "id": "201",
+    "authorId": "2",
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "priceKopecks": 99000,
+    "isFavorite": false
+  },
+  {
+    "id": "202",
+    "authorId": "2",
+    "title": "Sense and Sensibility",
+    "year": 1811,
+    "priceKopecks": 87000,
+    "isFavorite": true
+  },
+  {"id": "203", "authorId": "2", "title": "Emma", "year": 1815, "priceKopecks": 92000, "isFavorite": false},
+  {"id": "204", "authorId": "2", "title": "Persuasion", "year": 1817, "priceKopecks": 84000, "isFavorite": false}
+]

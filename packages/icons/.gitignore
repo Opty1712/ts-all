@@ -1,0 +1,4 @@
+src/components/generatedIcons.tsx
+src/components/generatedTypes.ts
+src/font
+!dist/

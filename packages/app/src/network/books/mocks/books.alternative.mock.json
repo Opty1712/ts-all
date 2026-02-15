@@ -1,0 +1,19 @@
+[
+  {"id": "301", "authorId": "3", "title": "Demo Story Book", "year": 2024, "priceKopecks": 120000, "isFavorite": true},
+  {
+    "id": "302",
+    "authorId": "3",
+    "title": "Feature Toggles in Action",
+    "year": 2025,
+    "priceKopecks": 150000,
+    "isFavorite": true
+  },
+  {
+    "id": "303",
+    "authorId": "2",
+    "title": "Typed Mocks Guide",
+    "year": 2026,
+    "priceKopecks": 110000,
+    "isFavorite": false
+  }
+]

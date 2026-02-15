@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "vite": ["node_modules/vite"]
+    },
+    "types": ["react"]
+  },
+  "preserveSymlinks": true,
+  "allowJs": true,
+  "exclude": ["dist"]
+}

@@ -1,0 +1,96 @@
+.layout {
+  min-height: 100vh;
+  background: var(--b2bColorsSurfaceLevel00);
+  color: var(--b2bColorsTextBase90);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacingL);
+  border-bottom: 1px solid var(--b2bColorsLineBase20);
+  box-shadow: var(--boxShadowElevation4Dp);
+  background-color: var(--b2bColorsSurfaceLevel10);
+  color: var(--b2bColorsTextAccent);
+  gap: var(--spacingL);
+}
+
+.title {
+  font-weight: 700;
+}
+
+.localeSwitcher {
+  display: flex;
+  gap: var(--spacingXXS);
+}
+
+.localeButton {
+  padding: var(--spacingXXS) var(--spacingXS);
+  border: 1px solid var(--b2bColorsLineBase20);
+  border-radius: var(--borderRadiusS);
+  background-color: var(--b2bColorsSurfaceLevel00);
+  color: var(--b2bColorsTextBase90);
+  cursor: pointer;
+}
+
+.localeButtonActive {
+  border-color: var(--b2bColorsLineAccent);
+  color: var(--b2bColorsTextAccent);
+}
+
+.menu {
+  display: flex;
+  gap: var(--spacingS);
+}
+
+.menuItem {
+  padding: var(--spacingXS) var(--spacingS);
+  border: 1px solid var(--b2bColorsLineBase20);
+  border-radius: var(--borderRadiusM);
+  background-color: var(--b2bColorsSurfaceLevel00);
+  color: var(--b2bColorsTextBase90);
+  cursor: pointer;
+}
+
+.menuItemActive {
+  border-color: var(--b2bColorsLineAccent);
+  color: var(--b2bColorsTextAccent);
+}
+
+.main {
+  padding: var(--spacingL);
+}
+
+.layoutDark {
+  background: var(--base1700);
+  color: var(--base020);
+
+  .header {
+    border-bottom-color: var(--base1200);
+    background: var(--base1600);
+    color: var(--base00);
+  }
+
+  .menuItem {
+    border-color: var(--base1100);
+    background: var(--base1400);
+    color: var(--base050);
+  }
+
+  .menuItemActive {
+    border-color: var(--accentBlue250);
+    color: var(--accentBlue250);
+  }
+
+  .localeButton {
+    border-color: var(--base1100);
+    background: var(--base1400);
+    color: var(--base050);
+  }
+
+  .localeButtonActive {
+    border-color: var(--accentBlue250);
+    color: var(--accentBlue250);
+  }
+}

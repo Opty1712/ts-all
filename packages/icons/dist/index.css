@@ -1,0 +1,35 @@
+/* Смотрите образец тут оформления тут https://github.com/jaywcjlove/svgtofont/blob/master/examples/templates/styles/_%7B%7Bfilename%7D%7D.css.template */
+@font-face {
+  font-family: "SomeVKProject";
+  src: url('SomeVKProject.woff2') format('woff2');
+}
+
+[class^="SomeVKProject-"], [class*=" SomeVKProject-"] {
+  font-family: 'SomeVKProject' !important;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="SomeVKProject-"][class*="_12"] {font-size: 12px;}
+[class^="SomeVKProject-"][class*="_16"] {font-size: 16px;}
+[class^="SomeVKProject-"][class*="_20"] {font-size: 20px;}
+[class^="SomeVKProject-"][class*="_24"] {font-size: 24px;}
+
+
+.SomeVKProject-Icon_Add_12::before { content: "\ea01"; }
+.SomeVKProject-Icon_Add_16::before { content: "\ea02"; }
+.SomeVKProject-Icon_Add_20::before { content: "\ea03"; }
+.SomeVKProject-Icon_Add_24::before { content: "\ea04"; }
+.SomeVKProject-Icon_Error_circle_filled_16::before { content: "\ea05"; }
+.SomeVKProject-Icon_Error_circle_filled_20::before { content: "\ea06"; }
+.SomeVKProject-Icon_Error_circle_filled_24::before { content: "\ea07"; }
+.SomeVKProject-Icon_Info_12::before { content: "\ea08"; }
+.SomeVKProject-Icon_Info_16::before { content: "\ea09"; }
+.SomeVKProject-Icon_Info_20::before { content: "\ea0a"; }
+.SomeVKProject-Icon_Info_24::before { content: "\ea0b"; }
+.SomeVKProject-Icon_User_16::before { content: "\ea0c"; }
+.SomeVKProject-Icon_User_20::before { content: "\ea0d"; }
+.SomeVKProject-Icon_User_24::before { content: "\ea0e"; }
+
+

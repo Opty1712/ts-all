@@ -1,0 +1,17 @@
+node_modules
+dist/*
+.idea
+.vscode
+.env.local
+.env.test
+../../.env
+.eslintcache
+.DS_Store
+/playwright/.cache/
+**/storage-states/
+**/test-results/
+**/allure-results/
+**/allure-report/
+**/reports/
+**/playwright-report/
+testplan.json
