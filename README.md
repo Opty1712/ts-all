@@ -4,6 +4,11 @@
 
 Проект показывает типизацию и контрактный подход на разных слоях frontend, конкретная реализация каждого слоя описана внутри конкретных проектов монорепы.
 
+## Ссылки из презентации
+
+- [Слайды к презентации с Дизайн-выходных про то как токены из фигмы попадают в код](https://www.figma.com/proto/Wbt78lbe5Gix5nkUPd8Zou/RuStore-%E2%86%92-%D0%94%D0%92?page-id=111%3A13813&node-id=158-14546&starting-point-node-id=158%3A14546&t=KKyyCSG98j3DZLeg-1)
+- [10 минутное видео, где я показываю, почему linaria - лучшее решение для стилизации приложения](https://www.youtube.com/watch?v=hAmd7cINqAU)
+
 ## README слоев
 
 - Common Utils: [`packages/common-utils/README.md`](packages/common-utils/README.md)
