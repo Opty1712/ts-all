@@ -1,6 +1,6 @@
 import {Locator, Page} from '@playwright/test';
 
-export abstract class BasicModel<const T extends Record<string, string>> {
+export abstract class BasicClass<const T extends Record<string, string>> {
   protected page: Page;
   public testIds: T;
   protected locators: Record<keyof T, Locator>;
@@ -19,5 +19,3 @@ export abstract class BasicModel<const T extends Record<string, string>> {
     );
   }
 }
-
-export abstract class AppModel<const T extends Record<string, string>> extends BasicModel<T> {}

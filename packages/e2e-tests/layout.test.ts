@@ -1,12 +1,11 @@
 import {layoutDataTestIds} from '@demo/app/src/components/Layout/LayoutData.testIds';
 import {expect, Locator, Page} from '@playwright/test';
 
-import {AppModel} from './appModel';
+import {BasicClass} from './basicClass';
 
 type LayoutDataTestIds = typeof layoutDataTestIds;
 
-export class Layout extends AppModel<LayoutDataTestIds> {
-  private url = '';
+export class Layout extends BasicClass<LayoutDataTestIds> {
   private constructor(page: Page) {
     super(page, layoutDataTestIds);
   }
@@ -19,10 +18,6 @@ export class Layout extends AppModel<LayoutDataTestIds> {
     }
 
     return _page;
-  }
-
-  public async open(): Promise<void> {
-    await this.page.goto(this.url);
   }
 
   public async methodToShowHowTestIdsAsLocatorsWork(): Promise<void> {
