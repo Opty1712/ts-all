@@ -39,6 +39,8 @@ function getArgs() {
 }
 
 const BASE64_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const DTS_CLASS_EXPORT_RE =
+  /^\s*(?:readonly\s+"[^"]+"\s*:\s*string;|export declare const\s+[A-Za-z0-9_-]+\s*:\s*string;)\s*$/m;
 
 function encodeVlq(value) {
   let vlq = value < 0 ? (-value << 1) + 1 : value << 1;
@@ -124,7 +126,7 @@ function buildClassLineMap(cssContent) {
     const className = match[1];
 
     if (!classLineByName.has(className)) {
-      classLineByName.set(className, i + 1);
+      classLineByName.set(className, i);
     }
   }
 
@@ -138,6 +140,12 @@ function ensureMap(dtsPath) {
   const cssFileName = path.basename(cssPath);
 
   let dtsContent = fs.readFileSync(dtsPath, 'utf8');
+
+  // Protect against race with typed-scss-modules writes: skip transient invalid .d.ts states.
+  if (!DTS_CLASS_EXPORT_RE.test(dtsContent)) {
+    return;
+  }
+
   const mappingComment = `//# sourceMappingURL=${mapFileName}`;
 
   if (!dtsContent.includes(mappingComment)) {

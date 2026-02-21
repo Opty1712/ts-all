@@ -1,15 +1,26 @@
 {
+  /** 4 поля ниже - синк конфигураций prettier + eslint */
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.requireConfig": true,
+
+  /** чтобы VSCode проверял CSS variables */
   "stylelint.validate": [
     "css",
     "scss"
   ],
+
+  /** 4 поля ниже - отвечают за проваливание в css файл */
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.multipleDeclarations": "goto",
+  "typescript.preferences.preferGoToSourceDefinition": true,
+  "javascript.preferences.preferGoToSourceDefinition": true,
+
+   /** запускать stylelint при сохранении файла */
   "editor.codeActionsOnSave": {
     "source.fixAll.stylelint": "explicit"
-  }
+  },
 }
