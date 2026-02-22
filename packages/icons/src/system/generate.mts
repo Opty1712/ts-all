@@ -9,6 +9,13 @@ import {version} from '../../package.json';
 /** Константы */
 const PROJECT_PREFIX_NAME = 'SomeVKProject'; // Без пробелов, иначе все сломается!!!
 const ICON_PREFIX = 'Icon_';
+const FONT_NAME_HASH = Math.random()
+  .toString(36)
+  .replace(/[^a-z]+/g, '')
+  .slice(0, 6);
+const FONT_NAME = `${PROJECT_PREFIX_NAME}-${FONT_NAME_HASH}`;
+const FONT_NAME_HASH_PASCAL = `${FONT_NAME_HASH.slice(0, 1).toUpperCase()}${FONT_NAME_HASH.slice(1)}`;
+const FONT_NAME_IDENTIFIER = `${PROJECT_PREFIX_NAME}${FONT_NAME_HASH_PASCAL}`;
 
 const tmpFolder = path.resolve(process.cwd(), 'tmp');
 const srcFolder = path.resolve(process.cwd(), 'src');
@@ -20,6 +27,7 @@ const resultFolder = path.resolve(process.cwd(), `${tmpFolder}/result`);
 const templatesFolder = path.resolve(process.cwd(), 'src/system/templates');
 
 const dtsGeneratedFile = `${PROJECT_PREFIX_NAME}.d.ts`;
+const dtsGeneratedFileWithHash = `${FONT_NAME}.d.ts`;
 
 /** Менять не нужно, на него по коду есть завязки */
 const typingFile = 'generatedTypes.ts';
@@ -28,12 +36,17 @@ const typingFile = 'generatedTypes.ts';
 const reactIconsFile = 'generatedReactIcons.tsx';
 const cssFile = 'style.css';
 
+/** Удаляем хеш из артефактов, где svgtofont использует fontName в идентификаторах/строках */
+const normalizeGeneratedContent = (content: string): string => {
+  return content.replaceAll(FONT_NAME_IDENTIFIER, PROJECT_PREFIX_NAME).replaceAll(FONT_NAME, PROJECT_PREFIX_NAME);
+};
+
 /** Создание шрифтов, шаблонов, стилей, типов */
 const generateFonts = async () => {
   await svgToFont({
     src: fixedSVGFolder,
     dist: path.resolve(process.cwd(), resultFolder),
-    fontName: PROJECT_PREFIX_NAME,
+    fontName: FONT_NAME,
     css: true,
     classNamePrefix: PROJECT_PREFIX_NAME,
     website: {
@@ -86,9 +99,20 @@ const generateFonts = async () => {
   console.log('Шрифт сгенерирован');
 };
 
+/** Удаляем хеш из d.ts, чтобы внутренние типы/импорты оставались стабильными */
+const normalizeGeneratedDTS = async () => {
+  const sourceDtsPath = path.resolve(process.cwd(), resultFolder, dtsGeneratedFileWithHash);
+  const targetDtsPath = path.resolve(process.cwd(), resultFolder, dtsGeneratedFile);
+  const dts = await readFile(sourceDtsPath, {encoding: 'utf-8'});
+  const normalizedDts = normalizeGeneratedContent(dts);
+
+  await writeFile(targetDtsPath, normalizedDts, {flag: 'w'});
+};
+
 /** Генерируем компоненты иконок и сохраняем файл в tmp */
 const createIconComponents = async () => {
-  const base = await readFile(path.resolve(process.cwd(), resultFolder, reactIconsFile), {encoding: 'utf-8'});
+  const generatedBase = await readFile(path.resolve(process.cwd(), resultFolder, reactIconsFile), {encoding: 'utf-8'});
+  const base = normalizeGeneratedContent(generatedBase);
   const iconNames = await getIconNames();
 
   const exports = `export const {${iconNames.join(', ')}} = icons;
@@ -190,6 +214,7 @@ await fixSVGFill();
 await addPrefixToIcons();
 await generateFonts();
 await normalizeGeneratedCSSFontUrl();
+await normalizeGeneratedDTS();
 await copyDTS();
 await createIconComponents();
 

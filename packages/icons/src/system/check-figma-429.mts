@@ -131,6 +131,44 @@ const buildRateLimitMessage = (retryAfterSeconds: number, headers: Headers): str
 ${recommendations}`;
 };
 
+const buildAuthErrorMessage = (status: 401 | 403, headers: Headers): string => {
+  const requestId = headers.get('x-request-id') ?? headers.get('x-figma-request-id');
+  const planTier = headers.get('x-figma-plan-tier');
+
+  if (status === 401) {
+    const details = [
+      'Ошибка: Figma API вернул 401 (Unauthorized). Токен не принят.',
+      'Что проверить:',
+      '- задан ли `FIGMA_TOKEN` в `packages/icons/.env` и подхватывается ли он в текущем shell;',
+      '- не истек ли токен и не был ли он отозван в Figma;',
+      '- нет ли лишних пробелов/кавычек в значении токена;',
+      '- после изменения `.env` перезапущен ли терминал/процесс сборки.',
+    ];
+
+    if (requestId) details.push(`request id: ${requestId}`);
+
+    return details.join('\n');
+  }
+
+  const details = [
+    'Ошибка: Figma API вернул 403 (Forbidden).',
+    'Важно: для Figma это может означать как проблемы с доступом к файлу, так и проблему с токеном (невалидный/отозванный/неподходящий).',
+    'Что проверить:',
+    '- корректен ли `FIGMA_TOKEN` (без лишних пробелов/кавычек), не истек ли он и не был ли отозван;',
+    '- токен точно подхвачен в текущем shell (после изменения `.env` перезапустили терминал/процесс);',
+    '- у аккаунта токена есть доступ к Figma-файлу (открывается ли файл в UI под этим аккаунтом);',
+    '- `fileId` в `.figmaexportrc.js` указывает на нужный файл, а не на другой/архивный;',
+    '- файл не находится в команде/проекте, куда у аккаунта токена нет прав;',
+    '- токен создан тем пользователем (или сервисным аккаунтом), у которого есть доступ к этому файлу;',
+    '- если недавно выдали доступ, попробуйте пересоздать токен или подождать пару минут.',
+  ];
+
+  if (planTier) details.push(`План аккаунта (по ответу API): ${planTier}`);
+  if (requestId) details.push(`request id: ${requestId}`);
+
+  return details.join('\n');
+};
+
 const fetchFileInfo = async (): Promise<Response> => {
   const token = process.env.FIGMA_TOKEN;
   if (!token) {
@@ -155,6 +193,10 @@ const assertNoRateLimitBeforeImport = async (): Promise<void> => {
     throw new Error(suffix);
   }
 
+  if (response.status === 401 || response.status === 403) {
+    throw new Error(buildAuthErrorMessage(response.status, response.headers));
+  }
+
   if (!response.ok) {
     throw new Error(`Проверка Figma API не прошла: статус ${response.status} ${response.statusText}.`);
   }
@@ -171,6 +213,10 @@ const diagnoseImportFailure = async (): Promise<never> => {
       : `Figma API вернул 429 (rate limit). Заголовок Retry-After: ${retryRaw ?? 'отсутствует'}`;
 
     throw new Error(`Шаг импорта не создал "${svgDir}". ${suffix}.`);
+  }
+
+  if (response.status === 401 || response.status === 403) {
+    throw new Error(`Шаг импорта не создал "${svgDir}". ${buildAuthErrorMessage(response.status, response.headers)}`);
   }
 
   if (!response.ok) {

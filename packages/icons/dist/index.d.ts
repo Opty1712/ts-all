@@ -14,6 +14,18 @@ export declare const IconErrorCircleFilled20: React_2.FC<React_2.DetailedHTMLPro
 
 export declare const IconErrorCircleFilled24: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
 
+export declare const IconFavorite16: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
+
+export declare const IconFavorite20: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
+
+export declare const IconFavorite24: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
+
+export declare const IconFavoriteFilled16: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
+
+export declare const IconFavoriteFilled20: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
+
+export declare const IconFavoriteFilled24: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
+
 export declare const IconInfo12: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;
 
 export declare const IconInfo16: React_2.FC<React_2.DetailedHTMLProps<React_2.HTMLAttributes<HTMLElement>, HTMLElement>>;

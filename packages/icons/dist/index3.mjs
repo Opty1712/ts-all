@@ -26,7 +26,7 @@ const getIconSet = () => {
   return iconSet;
 };
 const icons = getIconSet();
-const { IconAdd12, IconAdd16, IconAdd20, IconAdd24, IconErrorCircleFilled16, IconErrorCircleFilled20, IconErrorCircleFilled24, IconInfo12, IconInfo16, IconInfo20, IconInfo24, IconUser16, IconUser20, IconUser24 } = icons;
+const { IconAdd12, IconAdd16, IconAdd20, IconAdd24, IconErrorCircleFilled16, IconErrorCircleFilled20, IconErrorCircleFilled24, IconFavorite16, IconFavorite20, IconFavorite24, IconFavoriteFilled16, IconFavoriteFilled20, IconFavoriteFilled24, IconInfo12, IconInfo16, IconInfo20, IconInfo24, IconUser16, IconUser20, IconUser24 } = icons;
 export {
   IconAdd12,
   IconAdd16,
@@ -35,6 +35,12 @@ export {
   IconErrorCircleFilled16,
   IconErrorCircleFilled20,
   IconErrorCircleFilled24,
+  IconFavorite16,
+  IconFavorite20,
+  IconFavorite24,
+  IconFavoriteFilled16,
+  IconFavoriteFilled20,
+  IconFavoriteFilled24,
   IconInfo12,
   IconInfo16,
   IconInfo20,
