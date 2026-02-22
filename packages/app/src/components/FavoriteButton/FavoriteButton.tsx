@@ -1,4 +1,4 @@
-import {IconAdd20, IconErrorCircleFilled20} from '@demo/icons';
+import {IconFavorite20, IconFavoriteFilled20} from '@demo/icons';
 import {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 
@@ -19,7 +19,7 @@ export const FavoriteButton: FC<FavoriteButtonProps> = ({isFavorite, onClick}) =
       aria-label={isFavorite ? t('Убрать из избранного') : t('В избранное')}
       onClick={onClick}
     >
-      {isFavorite ? <IconErrorCircleFilled20 /> : <IconAdd20 />}
+      {isFavorite ? <IconFavoriteFilled20 /> : <IconFavorite20 />}
     </button>
   );
 };
