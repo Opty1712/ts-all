@@ -370,9 +370,9 @@ async function parseTokensAndGenerateFiles() {
     const cssVarsContent = `export const cssVars = [\n ${allCssVars.join(',\n ')}\n] as const;\n\n`;
     writeFileSync(TWClassNamesFile, result + cssVarsContent);
 
-    /**  Создаем JS файл только с константой cssVars */
+    /**  Создаем JS файл с теми же экспортами, что и в TS */
     const TWClassNamesJSFile = TWClassNamesFile.replace('.ts', '.js');
-    const jsContent = `export const cssVars = [\n ${allCssVars.join(',\n ')}\n];\n`;
+    const jsContent = `${result.replace(/ as const;/g, ';')}export const cssVars = [\n ${allCssVars.join(',\n ')}\n];\n`;
     writeFileSync(TWClassNamesJSFile, jsContent);
   }
 
