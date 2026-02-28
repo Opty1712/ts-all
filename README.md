@@ -115,3 +115,6 @@ ln -sf ВАШ_ПУТЬ_К_ПРОЕКТУ/.idea/liveTemplates/demo-css-vars.xml \
 
 - `tsconfig.eslint.json`  
   Отдельный tsconfig для типизации JS-конфигов и служебных файлов линтинга в корне.
+
+- `perf.mjs`  
+  Скрипт замера перфоманса проекта целиком, прогон через `tsc`
