@@ -17,7 +17,9 @@
     "lint:styles:fix": "stylelint \"**/*.{css,scss}\" --fix",
     "postinstall": "npm run build -w @demo/ui-kit && npm run build -w @demo/common-utils",
     "prepare": "lefthook install",
-    "generate:css-vars-autocomplete": "node packages/common-utils/scripts/stylelint-plugin-css-vars/generate-css-vars-list.js"
+    "generate:css-vars-autocomplete": "node packages/common-utils/scripts/stylelint-plugin-css-vars/generate-css-vars-list.js",
+    "perf:test": "node perf-tests/perf.mjs",
+    "perf:generate": "node perf-tests/generate.mjs"
   },
   "workspaces": {
     "packages": [
