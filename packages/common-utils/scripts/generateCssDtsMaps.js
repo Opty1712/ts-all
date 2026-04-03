@@ -60,25 +60,55 @@ function encodeVlq(value) {
   return encoded;
 }
 
-function buildMappings(dtsLines, classLineByName) {
+function getDtsClassPosition(line) {
+  const readonlyMatch = line.match(/^\s*readonly\s+"([^"]+)"\s*:\s*string;/);
+
+  if (readonlyMatch) {
+    const className = readonlyMatch[1];
+    const generatedColumn = line.indexOf(`"${className}"`);
+
+    if (generatedColumn !== -1) {
+      return {className, generatedColumn};
+    }
+  }
+
+  const exportMatch = line.match(/^\s*export declare const\s+([A-Za-z0-9_-]+)\s*:\s*string;/);
+
+  if (!exportMatch) {
+    return null;
+  }
+
+  const className = exportMatch[1];
+  const generatedColumn = line.indexOf(className, exportMatch.index);
+
+  if (generatedColumn === -1) {
+    return null;
+  }
+
+  return {className, generatedColumn};
+}
+
+function buildMappings(dtsLines, classPositionByName) {
   const mappingsByLine = new Array(dtsLines.length).fill('');
-  const propertyRe = /^\s*readonly\s+"([^"]+)"\s*:\s*string;/;
 
   for (let i = 0; i < dtsLines.length; i += 1) {
-    const match = dtsLines[i].match(propertyRe);
+    const dtsPosition = getDtsClassPosition(dtsLines[i]);
 
-    if (!match) {
+    if (!dtsPosition) {
       continue;
     }
 
-    const className = match[1];
-    const cssLine = classLineByName.get(className);
+    const cssPosition = classPositionByName.get(dtsPosition.className);
 
-    if (cssLine === undefined) {
+    if (!cssPosition) {
       continue;
     }
 
-    mappingsByLine[i] = {cssLine};
+    mappingsByLine[i] = {
+      cssLine: cssPosition.line,
+      cssColumn: cssPosition.column,
+      generatedColumn: dtsPosition.generatedColumn,
+    };
   }
 
   let prevSource = 0;
@@ -90,10 +120,10 @@ function buildMappings(dtsLines, classLineByName) {
       return '';
     }
 
-    const generatedColumn = 0;
+    const generatedColumn = entry.generatedColumn;
     const source = 0;
     const sourceLine = entry.cssLine;
-    const sourceColumn = 0;
+    const sourceColumn = entry.cssColumn;
 
     const segment =
       encodeVlq(generatedColumn) +
@@ -111,26 +141,30 @@ function buildMappings(dtsLines, classLineByName) {
   return mappings.join(';');
 }
 
-function buildClassLineMap(cssContent) {
-  const classLineByName = new Map();
+function buildClassPositionMap(cssContent) {
+  const classPositionByName = new Map();
   const lines = cssContent.split('\n');
-  const classRe = /^\s*\.([A-Za-z0-9_-]+)\b/;
+  const classRe = /\.([A-Za-z0-9_-]+)\b/g;
 
   for (let i = 0; i < lines.length; i += 1) {
-    const match = lines[i].match(classRe);
+    const line = lines[i];
+    let match;
 
-    if (!match) {
-      continue;
-    }
+    while ((match = classRe.exec(line)) !== null) {
+      const className = match[1];
 
-    const className = match[1];
+      if (classPositionByName.has(className)) {
+        continue;
+      }
 
-    if (!classLineByName.has(className)) {
-      classLineByName.set(className, i);
+      classPositionByName.set(className, {
+        line: i,
+        column: match.index + 1,
+      });
     }
   }
 
-  return classLineByName;
+  return classPositionByName;
 }
 
 function ensureMap(dtsPath) {
@@ -164,8 +198,8 @@ function ensureMap(dtsPath) {
   if (fs.existsSync(cssPath)) {
     try {
       const cssContent = fs.readFileSync(cssPath, 'utf8');
-      const classLineByName = buildClassLineMap(cssContent);
-      mappings = buildMappings(dtsLines, classLineByName);
+      const classPositionByName = buildClassPositionMap(cssContent);
+      mappings = buildMappings(dtsLines, classPositionByName);
     } catch (error) {
       console.warn(`[genCssDtsMaps] Failed to read CSS for ${dtsPath}:`, error);
     }
