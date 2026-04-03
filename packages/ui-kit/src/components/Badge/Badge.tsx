@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import {memo} from 'react';
 import {keyof} from 'ts-keyof';
 
@@ -6,6 +5,7 @@ import {bgColors} from '../../styles/generated/TWClassNames';
 import styles from './Badge.module.css';
 
 type Variant = 'warning' | 'positive' | 'negative' | 'neutral' | 'accent';
+type BgToken = (typeof bgColors)[number];
 
 export type BadgeProps = {
   /** Цветовой вариант */
@@ -19,20 +19,15 @@ export type BadgeProps = {
 export const Badge = memo<BadgeProps>(({variant, children}) => {
   return (
     <div className={styles.root}>
-      <div
-        className={cn(
-          'border border-solid rounded-borderRadiusXXXL border-b2bColorsLineBase00 w-spacingXS h-spacingXS min-w-spacingXS',
-          variants[variant],
-        )}
-      />
-      <div className={styles.badgeText}>{children}</div>
+      <div className={variants[variant]} />
+      <div className="rounded-borderRadiusXXL border-b2bColorsLineBase00 w-spacingXS">{children}</div>
     </div>
   );
 });
 
 Badge.displayName = keyof({Badge});
 
-const variants: Record<Variant, (typeof bgColors)[number]> = {
+const variants: Record<Variant, BgToken> = {
   accent: 'bg-b2bColorsIconAccent',
   negative: 'bg-b2bColorsIconNegative',
   neutral: 'bg-b2bColorsIconBase10',
