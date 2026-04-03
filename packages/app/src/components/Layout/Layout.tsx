@@ -31,7 +31,7 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
 
   return (
     <div className={classnames(styles.layout, isDarkTheme && styles.layoutDark)}>
-      <header className={styles.header}>
+      <header className={styles.header} data-testid={layoutDataTestIds.header}>
         <nav className={styles.menu}>
           {menuItems.map((item) => {
             const isActive = location === item.path;

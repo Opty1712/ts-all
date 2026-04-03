@@ -1,6 +1,6 @@
 # e2e-tests
 
-Пакет-заготовка для e2e слоя в демо-проекте.
+Минимальный Playwright e2e-слой для демо-проекта.
 
 Текущее назначение пакета:
 
@@ -9,19 +9,25 @@
 
 ## Что есть сейчас
 
-- `appModel.ts`  
-  Базовые абстракции `BasicModel` / `AppModel`, которые строят типизированные локаторы через `page.getByTestId(...)`.
+- `basicClass.ts`
+  Базовый generic-класс, который строит типизированный объект `locators` через `page.getByTestId(...)`.
 
 - `layout.test.ts`  
-  Пример page model `Layout`, который использует реальные test ids из `packages/app/src/components/Layout/LayoutData.testIds.ts`.
+  Реальный Playwright-тест и page object `Layout`, который использует реальные test ids из `packages/app/src/components/Layout/LayoutData.testIds.ts`.
 
-## Важный статус
+## Как запустить
 
-В текущем состоянии пакет **не содержит запускаемых e2e-тестов**:
+Из корня репозитория:
 
-- нет `playwright.config.ts` в репозитории
-- в `packages/e2e-tests/package.json` нет `scripts` для запуска
-- `layout.test.ts` содержит модель/пример, а не `test(...)`-кейсы
+```bash
+npm run test -w e2e-tests
+```
+
+Playwright сам:
+
+1. собирает `@demo/app`
+2. поднимает preview-сервер
+3. открывает страницу и проверяет типизированные локаторы меню
 
 ## Контракт с app
 
@@ -37,4 +43,5 @@
 
 1. test ids объявляются один раз в `app`
 2. e2e-слой импортирует тот же объект ids
-3. опечатки в именах ловятся TypeScript
+3. page object получает типизированные `locators`
+4. опечатки в именах ловятся TypeScript еще до запуска теста
