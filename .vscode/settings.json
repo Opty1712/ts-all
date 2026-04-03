@@ -23,4 +23,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.stylelint": "explicit"
   },
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
 }
