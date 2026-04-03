@@ -10,7 +10,9 @@
     "dev": "npm run dev:frontend & npm run dev:backend",
     "storybook": "storybook dev -p 6006",
     "type-check": "npm run typed-css && tsc --noEmit",
-    "typed-css": "tcm src --silent && node ../../packages/common-utils/scripts/generateCssDtsMaps.js",
+    "typed-css:tcm": "tcm src --silent",
+    "typed-css:dtsmap": "node ../../packages/common-utils/scripts/generateCssDtsMaps.js",
+    "typed-css": "npm run typed-css:tcm && npm run typed-css:dtsmap",
     "typed-css:dev": "node ../../packages/common-utils/scripts/generateCssDtsMaps.js --watch & tcm src --watch --silent",
     "typed-css:remove": "find . -type f \\( -name \"*.module.css.d.ts\" -o -name \"*.module.css.d.ts.map\" \\) -not -path \"./node_modules/*\" -not -path \"./dist/*\" -not -path \"./build/*\" -delete",
     "typograf-locales": "tsx scripts/typograf-locales.ts"

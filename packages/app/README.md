@@ -46,8 +46,10 @@ npm run storybook
 - `npm run dev:backend` - локальный mock server (`dev-server/server.ts`), это отдельный вспомогательный сервис для эмуляции backend API в демо (GET/POST сценарии), не часть runtime production-приложения
 - `npm run storybook` - Storybook app
 - `npm run type-check` - проверка типовой целостности: генерация типов CSS Modules и проверка TypeScript-контрактов приложения
-- `npm run typed-css` - генерация `.d.ts` и `.d.ts.map` для CSS Modules
-- `npm run typed-css:dev` - watch-режим `typed-css`
+- `npm run typed-css:tcm` - запуск `tcm` для генерации `*.module.css.d.ts`
+- `npm run typed-css:dtsmap` - генерация `*.module.css.d.ts.map`
+- `npm run typed-css` - последовательный запуск `typed-css:tcm` и `typed-css:dtsmap`
+- `npm run typed-css:dev` - watch-режим для `tcm` и генерации `*.module.css.d.ts.map`
 - `npm run typed-css:remove` - удаление сгенерированных `*.module.css.d.ts` и `*.module.css.d.ts.map` (кроме `node_modules/dist/build`)
 - `npm run typograf-locales` - типографская обработка локалей (запускается в `lefthook` на `pre-commit`)
 
@@ -159,11 +161,11 @@ npm run storybook
 
 ### 10) CSS Modules типизация и переход в исходный CSS
 
-- `typed-css` и `typed-css:dev` генерируют:
-  - `*.module.css.d.ts`
-  - `*.module.css.d.ts.map`
-- генерация `*.module.css.d.ts.map` делегирована в:
-  - `packages/common-utils/scripts/generateCssDtsMaps.js`
+- `typed-css:tcm` генерирует `*.module.css.d.ts`
+- `typed-css:dtsmap` генерирует `*.module.css.d.ts.map`
+- `typed-css` последовательно запускает `typed-css:tcm` и `typed-css:dtsmap`
+- `typed-css:dev` запускает `tcm --watch` и `generateCssDtsMaps.js --watch`
+- генерация `*.module.css.d.ts.map` делегирована в `packages/common-utils/scripts/generateCssDtsMaps.js`
 - `typed-css:remove` удаляет ранее сгенерированные `*.module.css.d.ts` и `*.module.css.d.ts.map`
 
 ### 11) UI-kit и иконки в app

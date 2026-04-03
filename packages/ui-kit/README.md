@@ -42,8 +42,10 @@ npm run dev
 - `npm run css` - парсинг Figma-токенов в `src/styles/generated`
 - `npm run tailwind:build` - генерация `tailwindOutputFile.css`
 - `npm run tailwind:watch` - watch для tailwind
-- `npm run typed-css` - генерация `.d.ts` для CSS Modules + `.d.ts.map`
-- `npm run typed-css:dev` - watch-режим typed-css + `.d.ts.map`
+- `npm run typed-css:tcm` - запуск `tcm` для генерации `*.module.css.d.ts`
+- `npm run typed-css:dtsmap` - генерация `*.module.css.d.ts.map`
+- `npm run typed-css` - последовательный запуск `typed-css:tcm` и `typed-css:dtsmap`
+- `npm run typed-css:dev` - watch-режим для `tcm` и генерации `*.module.css.d.ts.map`
 - `npm run type-check` - проверка типов
 
 ## Работа со стилями
@@ -152,6 +154,13 @@ npm run css
 - автокомплит классов
 - защита от опечаток на этапе TypeScript
 - переход из TS/TSX в исходный CSS (через map)
+
+Скрипты разделены по ответственности:
+
+- `typed-css:tcm` генерирует `*.module.css.d.ts`
+- `typed-css:dtsmap` генерирует `*.module.css.d.ts.map`
+- `typed-css` последовательно запускает `typed-css:tcm` и `typed-css:dtsmap`
+- `typed-css:dev` запускает `tcm --watch` и `generateCssDtsMaps.js --watch`
 
 Генерация `.d.ts.map` выполняется скриптом:
 
