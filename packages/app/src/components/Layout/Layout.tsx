@@ -14,9 +14,9 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
   const {$omicronStore} = useStores();
   const [location, navigate] = useLocation();
   const currentRoute = getRouteByPath(location);
-  const isDarkThemeALlowedByToggle = $omicronStore.getOmicronConfig.data.DARK_THEME_ENABLED;
+  const isDarkThemeAllowedByToggle = $omicronStore.getOmicronConfig.data.DARK_THEME_ENABLED;
   const isDarkThemeRoute = currentRoute ? getRouteParam(currentRoute, 'isDarkTheme') : false;
-  const isDarkTheme = isDarkThemeALlowedByToggle && isDarkThemeRoute;
+  const isDarkTheme = isDarkThemeAllowedByToggle && isDarkThemeRoute;
   const currentLanguage = i18n.resolvedLanguage?.startsWith('en') ? 'en' : 'ru';
 
   useEffect(() => {

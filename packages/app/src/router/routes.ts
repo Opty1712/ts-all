@@ -58,14 +58,20 @@ export const getRouteByPath = (pathname: string): ValueOf<AppRoutes> | undefined
  * Возвращает значение параметра роута из `route.params`.
  * Если параметр не задан для конкретного роута, вернет `undefined`.
  */
-export const getRouteParam = <P extends RouteParamKey>(
+export function getRouteParam<R extends ValueOf<AppRoutes>, P extends keyof R['params']>(
+  route: R,
+  param: P,
+): R['params'][P];
+export function getRouteParam<P extends RouteParamKey>(
   route: ValueOf<AppRoutes>,
   param: P,
-): RouteParamValue<P> | undefined => {
+): RouteParamValue<P> | undefined;
+
+export function getRouteParam(route: ValueOf<AppRoutes>, param: RouteParamKey) {
   const params = route?.params as Partial<Record<RouteParamKey, unknown>> | undefined;
 
-  return params?.[param] as RouteParamValue<P> | undefined;
-};
+  return params?.[param];
+}
 
 type RouteNode = {
   params?: Record<string, unknown>;
@@ -87,14 +93,14 @@ type Flatten<T, Prefix extends string = ''> = {
 
 export type AppRouteLocations = Flatten<typeof routes>;
 
+type GetOwnParams<T> = T extends {params: infer Params} ? Params : {};
+
 type GetParams<T, P extends string> = P extends keyof T
-  ? T[P] extends {params: infer Params}
-    ? Params
-    : {}
-  : P extends `${infer Head}/${infer Tail}`
-    ? Head extends keyof T
-      ? T[Head] extends object
-        ? GetParams<T[Head], `/${Tail}`>
+  ? GetOwnParams<T[P]>
+  : P extends `/${infer Head}/${infer Tail}`
+    ? `/${Head}` extends keyof T
+      ? T[`/${Head}`] extends object
+        ? GetOwnParams<T[`/${Head}`]> & GetParams<T[`/${Head}`], `/${Tail}`>
         : {}
       : {}
     : {};

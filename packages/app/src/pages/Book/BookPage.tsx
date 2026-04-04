@@ -1,5 +1,5 @@
 import {FavoriteButton} from '@/components/FavoriteButton/FavoriteButton';
-import {APP_ROUTES} from '@/router/routes';
+import {APP_ROUTES, getRouteParam} from '@/router/routes';
 import {useStores} from '@/stores/StoresProvider';
 import {Badge} from '@demo/ui-kit';
 import {observer} from 'mobx-react-lite';
@@ -10,9 +10,24 @@ import {useRoute} from 'wouter';
 export const BookPage = observer(() => {
   const {$booksStore} = useStores();
   const {t} = useTranslation();
+
+  /** Выводим параметры конкретного роута */
+  const isDarkThemeRoute = getRouteParam(APP_ROUTES['/authors/author/:authorId/books/:bookId'], 'isDarkTheme');
+
+  /** Выводим значения конкретного роута в рантайме */
   const [, params] = useRoute(APP_ROUTES['/authors/author/:authorId/books/:bookId'].path);
-  const authorId = params?.authorId;
-  const bookId = params?.bookId;
+  const authorId = params?.authorId || '';
+  const bookId = params?.bookId || '';
+
+  /** Собираем динамический роут */
+  const bookPath = APP_ROUTES['/authors/author/:authorId/books/:bookId'].getDynamic({
+    authorId,
+    bookId,
+  });
+
+  // Это нужно для Презентации, чтоб TS и линтеры не ругались
+  // eslint-disable-next-line no-console
+  console.log(isDarkThemeRoute, bookPath);
 
   useEffect(() => {
     if (!authorId || !bookId) {
