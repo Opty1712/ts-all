@@ -92,7 +92,7 @@ npm run css
 - `tailwindLightColors.json` - светлая тема; используется в ESLint-конфигурации для валидации допустимых `className`
 - `tailwindDarkColors.json` - темная тема
 - `TWClassNames.ts` - union-типы допустимых Tailwind/CSS token-классов
-- `TWClassNames.js` используется Stylelint-плагином как allow-list CSS-переменных
+- `TWClassNames.cjs` используется Stylelint-плагином как allow-list CSS-переменных
 - `types.ts` - union токенов цветов (`FigmaColorToken`), может использоваться для строгой типизации токен-пропсов
 
 Сгенерированные файлы не редактируются вручную.
@@ -126,7 +126,7 @@ npm run css
 
 Разрешенный список CSS-переменных берется из сгенерированного файла:
 
-- `src/styles/generated/TWClassNames.js`
+- `src/styles/generated/TWClassNames.cjs`
 
 Этот файл читает Stylelint-плагин, и на его основе валидирует `var(--token)` в стилях.
 

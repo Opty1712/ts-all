@@ -52,7 +52,7 @@ npm i
 ## CSS Vars: важные детали (общие для монорепы)
 
 - В stylelint подключено правило `css-vars/valid-css-vars`.
-- Валидные токены берутся из `packages/ui-kit/src/styles/generated/TWClassNames.js`.
+- Валидные токены берутся из `packages/ui-kit/src/styles/generated/TWClassNames.cjs`.
 - Исключения лежат в `packages/common-utils/scripts/stylelint-plugin-css-vars/ignoredCSSVars.js`.
 - Диагностика новых/подозрительных переменных:
 

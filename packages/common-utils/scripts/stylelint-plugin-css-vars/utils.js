@@ -2,40 +2,26 @@ const fs = require('fs');
 const path = require('path');
 const {IGNORED_VARS_PATH, SKIP_SCAN_DIRECTORIES, TOKENS_CSS_CANDIDATES, TW_CLASS_NAMES_PATH} = require('./constants');
 
-/**
- * Извлекает CSS-переменные из содержимого TWClassNames.js.
- *
- * @param {string} content Содержимое файла TWClassNames.js.
- * @returns {string[]} Массив CSS-переменных в формате `--token`.
- */
-function parseCSSVarsFromTWClassNames(content) {
-  const cssVarsMatch = content.match(/export const cssVars = \[([\s\S]*?)\]/);
-  if (!cssVarsMatch) {
-    return [];
-  }
-
-  const varsContent = cssVarsMatch[1];
-  const vars = varsContent.match(/['"]--[^'"]+['"]/g) || [];
-  return vars.map((entry) => entry.replace(/['"]/g, ''));
-}
 
 /**
- * Читает валидные CSS-переменные из TWClassNames.js.
+ * Читает валидные CSS-переменные из TWClassNames.cjs.
  *
  * @returns {string[]} Массив валидных CSS-переменных.
  */
 function getAllowedCSSVars() {
   try {
-    const content = fs.readFileSync(TW_CLASS_NAMES_PATH, 'utf8');
-    return parseCSSVarsFromTWClassNames(content);
+    delete require.cache[require.resolve(TW_CLASS_NAMES_PATH)];
+    const {cssVars} = require(TW_CLASS_NAMES_PATH);
+
+    return Array.isArray(cssVars) ? cssVars : [];
   } catch (error) {
-    console.error('Failed to read TWClassNames.js:', error);
+    console.error('Failed to load TWClassNames.cjs:', error);
     return [];
   }
 }
 
 /**
- * Читает валидные CSS-переменные из TWClassNames.js как Set.
+ * Читает валидные CSS-переменные из TWClassNames.cjs как Set.
  *
  * @returns {Set<string>} Set валидных CSS-переменных.
  */
@@ -180,7 +166,6 @@ function getUsedCSSVarsFromFile(filePath) {
 }
 
 module.exports = {
-  parseCSSVarsFromTWClassNames,
   getAllowedCSSVars,
   getAllowedCSSVarsSet,
   readIgnoredCSSVars,

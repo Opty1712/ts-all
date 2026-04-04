@@ -330,14 +330,16 @@ async function parseTokensAndGenerateFiles() {
   /** Генерируем и сохраняем массив финальных класснеймов, используемых в TailWind */
   function saveTWClassNames(palette, spacingTokens, borderRadiusTokens, shadowTokens) {
     /** Получаем массив класснеймов, определенного префиксом типа */
-    function getTWClassNamesChunk(palette, prefix) {
+    function getTWClassNamesChunk(palette, prefix, exportPrefix = 'export const') {
       const classNames = Object.keys(palette).reduce((accumulator, key) => {
         accumulator.push(`'${prefix}-${convertToCamelCase(key)}'`);
 
         return accumulator;
       }, []);
 
-      return `export const ${prefix}Colors = [\n ${classNames.join(',\n ')}\n] as const;\n\n`;
+      const suffix = exportPrefix === 'const' ? ';' : ' as const;';
+
+      return `${exportPrefix} ${prefix}Colors = [\n ${classNames.join(',\n ')}\n]${suffix}\n\n`;
     }
 
     /** Получаем массив CSS переменных */
@@ -351,10 +353,21 @@ async function parseTokensAndGenerateFiles() {
       return cssVars;
     }
 
+    /** Получаем константу со всеми CSS переменными */
+    function getCSSVarsConstChunk(allCssVars, exportPrefix = 'export const') {
+      const suffix = exportPrefix === 'const' ? ';' : ' as const;';
+
+      return `${exportPrefix} cssVars = [\n ${allCssVars.join(',\n ')}\n]${suffix}\n\n`;
+    }
+
     const tailWindPrefixes = ['bg', 'text', 'fill'];
 
     const result = tailWindPrefixes.reduce((accumulator, current) => {
       return accumulator + getTWClassNamesChunk(palette, current);
+    }, '');
+
+    const cjsResult = tailWindPrefixes.reduce((accumulator, current) => {
+      return accumulator + getTWClassNamesChunk(palette, current, 'const');
     }, '');
 
     /** Получаем все CSS переменные: цвета, spacing, borderRadius, boxShadow */
@@ -367,13 +380,14 @@ async function parseTokensAndGenerateFiles() {
     const allCssVars = [...colorVars, ...spacingVars, ...borderRadiusVars, ...boxShadowVars];
 
     /** Сохраняем TS файл со всеми константами */
-    const cssVarsContent = `export const cssVars = [\n ${allCssVars.join(',\n ')}\n] as const;\n\n`;
+    const cssVarsContent = getCSSVarsConstChunk(allCssVars);
     writeFileSync(TWClassNamesFile, result + cssVarsContent);
 
-    /**  Создаем JS файл с теми же экспортами, что и в TS */
-    const TWClassNamesJSFile = TWClassNamesFile.replace('.ts', '.js');
-    const jsContent = `${result.replace(/ as const;/g, ';')}export const cssVars = [\n ${allCssVars.join(',\n ')}\n];\n`;
-    writeFileSync(TWClassNamesJSFile, jsContent);
+    /** Создаем CJS файл для stylelint-утилит */
+    const TWClassNamesCJSFile = TWClassNamesFile.replace('.ts', '.cjs');
+    const cjsContent = `${cjsResult}${getCSSVarsConstChunk(allCssVars, 'const')}module.exports = { bgColors, textColors, fillColors, cssVars };\n`;
+
+    writeFileSync(TWClassNamesCJSFile, cjsContent);
   }
 
   /**

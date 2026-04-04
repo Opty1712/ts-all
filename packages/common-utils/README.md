@@ -38,7 +38,7 @@ export const testIds = generateTestIds(ids);
 
 - Правило: `css-vars/valid-css-vars`
 - Файл: `scripts/stylelint-plugin-css-vars/plugin.js`
-- Источник валидных переменных: `packages/ui-kit/src/styles/generated/TWClassNames.js`
+- Источник валидных переменных: `packages/ui-kit/src/styles/generated/TWClassNames.cjs`
 - Постоянный allow-list исключений: `scripts/stylelint-plugin-css-vars/ignoredCSSVars.js`
 
 Сопутствующие скрипты:
@@ -55,7 +55,7 @@ export const testIds = generateTestIds(ids);
 - `plugin.js` - регистрация stylelint-правила `css-vars/valid-css-vars`
 - `generate-css-vars-list.js` - генерация файлов автокомплита CSS vars для IDE
 - `find-css-vars-errors.js` - скан `.module.css/.module.scss` и генерация отчета `CSSVarsErrors.js`
-- `utils.js` - утилиты чтения `TWClassNames.js`, `ignoredCSSVars.js`, парсинга и обхода файлов
+- `utils.js` - утилиты чтения `TWClassNames.cjs`, `ignoredCSSVars.js` и обхода файлов
 - `constants.js` - константы путей (`ROOT_DIR`, `TW_CLASS_NAMES_PATH`, output paths)
 - `ignoredCSSVars.js` - ручной allow-list CSS vars, которых нет в ui-kit токенах
 

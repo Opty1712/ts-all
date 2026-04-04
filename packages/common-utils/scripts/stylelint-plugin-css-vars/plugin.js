@@ -3,7 +3,7 @@ const {getAllowedCSSVarsSet, isIgnoredCSSVar, readIgnoredCSSVars} = require('./u
 
 const ruleName = 'css-vars/valid-css-vars';
 const messages = stylelint.utils.ruleMessages(ruleName, {
-  invalid: (varName) => `CSS переменная "${varName}" не найдена в TWClassNames.js.
+  invalid: (varName) => `CSS переменная "${varName}" не найдена в TWClassNames.cjs.
   Или ты опечатался, так как мы используем CSS vars из ui-kit или
   ее надо добавить в packages/common-utils/scripts/stylelint-plugin-css-vars/ignoredCSSVars.js, если все в порядке`,
   invalidSyntax: (varContent) => `Некорректный синтаксис CSS переменной: "var(${varContent})"`,

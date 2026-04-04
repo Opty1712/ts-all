@@ -2,7 +2,7 @@
  * Генерирует файлы автокомплита CSS-переменных для VS Code и WebStorm.
  *
  * Что делает:
- * - читает список валидных CSS vars из `packages/ui-kit/src/styles/generated/TWClassNames.js`;
+ * - читает список валидных CSS vars из `packages/ui-kit/src/styles/generated/TWClassNames.cjs`;
  * - пытается подтянуть значения токенов из сгенерированного CSS (`tailwindOutputFile.css`, fallback `lib/style.css`);
  * - формирует:
  *   - `.vscode/demo-css-vars.code-snippets` для VS Code;

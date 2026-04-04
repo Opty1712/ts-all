@@ -12,4 +12,4 @@ packages/icons/src/generatedTypes.ts
 packages/icons/src/system/templates/style.css
 packages/common-utils/scripts/
 storybook-static/
-
+test-results/

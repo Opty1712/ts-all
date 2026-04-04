@@ -8,7 +8,7 @@ const ROOT_DIR = path.resolve(__dirname, '../../../../');
 /**
  * Путь до источника валидных ui-kit CSS tokens.
  */
-const TW_CLASS_NAMES_PATH = path.join(ROOT_DIR, 'packages/ui-kit/src/styles/generated/TWClassNames.js');
+const TW_CLASS_NAMES_PATH = path.join(ROOT_DIR, 'packages/ui-kit/src/styles/generated/TWClassNames.cjs');
 
 /**
  * Кандидаты для чтения значений CSS-переменных.
