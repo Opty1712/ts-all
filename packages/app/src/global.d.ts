@@ -2,16 +2,6 @@
 import {EnvConfig} from '@/types/EnvConfig';
 import 'mobx';
 
-declare module '*.module.css' {
-  const classes: Record<string, string>;
-  export default classes;
-}
-
-declare module '*.css' {
-  const value: string;
-  export default value;
-}
-
 declare global {
   interface Window {
     _ENV_: EnvConfig;
