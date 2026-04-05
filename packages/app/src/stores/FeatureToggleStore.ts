@@ -7,13 +7,13 @@ import {makeObservable, observable} from 'mobx';
 import {makeConfigSafe} from '../../../feature-toggles';
 
 export class FeatureToggleStore extends BaseStore {
-  @observable public accessor getOmicronConfig: Getter<void, FeatureToggleConfig, FeatureToggleConfig, true>;
+  @observable public accessor getFTConfig: Getter<void, FeatureToggleConfig, FeatureToggleConfig, true>;
 
   constructor() {
     super();
     makeObservable(this);
 
-    this.getOmicronConfig = this.createGetter({
+    this.getFTConfig = this.createGetter({
       fetchFn: getFeatureToggleConfig,
       staleTimeMs: 10000,
       adaptDataFromBackend: (data) => makeConfigSafe<FeatureToggleConfig>(FeatureToggleConfigSchema, data),

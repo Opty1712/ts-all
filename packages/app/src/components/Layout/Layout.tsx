@@ -11,17 +11,17 @@ import {layoutDataTestIds} from './LayoutData.testIds';
 
 export const Layout: FC<PropsWithChildren> = observer(({children}) => {
   const {t, i18n} = useTranslation();
-  const {$omicronStore} = useStores();
+  const {$ftStore} = useStores();
   const [location, navigate] = useLocation();
   const currentRoute = getRouteByPath(location);
-  const isDarkThemeAllowedByToggle = $omicronStore.getOmicronConfig.data.DARK_THEME_ENABLED;
+  const isDarkThemeAllowedByToggle = $ftStore.getFTConfig.data.DARK_THEME_ENABLED;
   const isDarkThemeRoute = currentRoute ? getRouteParam(currentRoute, 'isDarkTheme') : false;
   const isDarkTheme = isDarkThemeAllowedByToggle && isDarkThemeRoute;
   const currentLanguage = i18n.resolvedLanguage?.startsWith('en') ? 'en' : 'ru';
 
   useEffect(() => {
-    $omicronStore.getOmicronConfig.run();
-  }, [$omicronStore]);
+    $ftStore.getFTConfig.run();
+  }, [$ftStore]);
 
   const menuItems = [
     {label: t('Главная'), path: APP_ROUTES['/'].path, testId: layoutDataTestIds.menuTopHome},

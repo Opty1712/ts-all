@@ -1,8 +1,8 @@
 import {useStores} from '@/stores/StoresProvider';
 
 export const useFeatureToggles = () => {
-  const {$omicronStore} = useStores();
-  const config = $omicronStore.getOmicronConfig.data;
+  const {$ftStore} = useStores();
+  const config = $ftStore.getFTConfig.data;
 
   return config;
 };

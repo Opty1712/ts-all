@@ -5,7 +5,7 @@ import {FeatureToggleStore} from './FeatureToggleStore';
 export const createStores = () => ({
   $authorsStore: new AuthorsStore(),
   $booksStore: new BooksStore(),
-  $omicronStore: new FeatureToggleStore(),
+  $ftStore: new FeatureToggleStore(),
 });
 
 export type Stores = ReturnType<typeof createStores>;
