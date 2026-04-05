@@ -1,6 +1,10 @@
 import {FeatureToggleConfig} from '@/types/featureToggles';
 
-import {ConfigSchema, getBoolean, getStringArray} from '../../../feature-toggles';
+import {
+  ConfigSchema,
+  getBoolean,
+  getStringArray,
+} from '../../../feature-toggles';
 
 export const FeatureToggleConfigSchema = {
   DARK_THEME_ENABLED: {

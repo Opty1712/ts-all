@@ -19,4 +19,6 @@ export type InferConfigType<T extends ConfigSchema> = {
   [P in keyof T]: T[P] extends Field<infer U> ? U : never;
 };
 
-export type FeatureToggleConfigResponseType<ConfigType extends Record<string, unknown>> = ConfigType;
+export type FeatureToggleConfigResponseType<
+  ConfigType extends Record<string, unknown>,
+> = ConfigType;

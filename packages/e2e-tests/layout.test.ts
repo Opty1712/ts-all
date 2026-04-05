@@ -12,7 +12,9 @@ export class Layout extends BasicClass<LayoutDataTestIds> {
   }
 }
 
-test('layout uses typed Playwright locators from shared test ids', async ({page}) => {
+test('layout uses typed Playwright locators from shared test ids', async ({
+  page,
+}) => {
   const layout = new Layout(page);
 
   await page.goto('/');

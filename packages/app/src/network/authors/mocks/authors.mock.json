@@ -1,5 +1,10 @@
 [
   {"id": "1", "firstName": "George", "lastName": "Orwell", "isFavorite": true},
   {"id": "2", "firstName": "Jane", "lastName": "Austen", "isFavorite": false},
-  {"id": "3", "firstName": "Depreacted", "lastName": "By Feature Toggle Service", "isFavorite": false}
+  {
+    "id": "3",
+    "firstName": "Depreacted",
+    "lastName": "By Feature Toggle Service",
+    "isFavorite": false
+  }
 ]

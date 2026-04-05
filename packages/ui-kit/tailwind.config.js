@@ -3,9 +3,14 @@ const {createThemes} = require('tw-colors');
 
 const figmaVariablesParsingFolder = __dirname + '/src/styles/generated/';
 
-const {width, height, 'min-height': minHeight, 'min-width': minWidth, spacing, ...theme} = require(
-  `${figmaVariablesParsingFolder}tailwindTheme.json`,
-);
+const {
+  width,
+  height,
+  'min-height': minHeight,
+  'min-width': minWidth,
+  spacing,
+  ...theme
+} = require(`${figmaVariablesParsingFolder}tailwindTheme.json`);
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -24,7 +29,9 @@ const config = {
     createThemes(
       {
         /** 2. Импортируем только наши сгенерированные цвета из фигмы */
-        light: require(`${figmaVariablesParsingFolder}tailwindLightColors.json`),
+        light: require(
+          `${figmaVariablesParsingFolder}tailwindLightColors.json`,
+        ),
         dark: require(`${figmaVariablesParsingFolder}tailwindDarkColors.json`),
       },
       {

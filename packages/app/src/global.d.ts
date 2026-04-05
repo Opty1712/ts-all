@@ -20,5 +20,9 @@ declare module 'mobx' {
   }
 
   // Позволяет использовать @observable как property decorator с descriptor
-  function observable(target: any, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>): void;
+  function observable(
+    target: any,
+    propertyKey: string | symbol,
+    descriptor?: TypedPropertyDescriptor<any>,
+  ): void;
 }

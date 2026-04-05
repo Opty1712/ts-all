@@ -15,9 +15,18 @@ export const Router = observer(() => {
       <Route path={APP_ROUTES['/'].path} component={Home} />
       <Route path={APP_ROUTES['/authors'].path} component={AuthorsPage} />
       <Route path={APP_ROUTES['/authors/books'].path} component={BooksPage} />
-      <Route path={APP_ROUTES['/authors/author/:authorId'].path} component={AuthorPage} />
-      <Route path={APP_ROUTES['/authors/author/:authorId/books'].path} component={AuthorBooksPage} />
-      <Route path={APP_ROUTES['/authors/author/:authorId/books/:bookId'].path} component={BookPage} />
+      <Route
+        path={APP_ROUTES['/authors/author/:authorId'].path}
+        component={AuthorPage}
+      />
+      <Route
+        path={APP_ROUTES['/authors/author/:authorId/books'].path}
+        component={AuthorBooksPage}
+      />
+      <Route
+        path={APP_ROUTES['/authors/author/:authorId/books/:bookId'].path}
+        component={BookPage}
+      />
     </Switch>
   );
 });

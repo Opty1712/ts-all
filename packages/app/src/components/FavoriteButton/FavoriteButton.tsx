@@ -9,7 +9,10 @@ type FavoriteButtonProps = {
   onClick: () => void;
 };
 
-export const FavoriteButton: FC<FavoriteButtonProps> = ({isFavorite, onClick}) => {
+export const FavoriteButton: FC<FavoriteButtonProps> = ({
+  isFavorite,
+  onClick,
+}) => {
   const {t} = useTranslation();
 
   return (

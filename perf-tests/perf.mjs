@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import {execSync} from 'node:child_process';
 
-const output = execSync('yarn tsc -p packages/app/tsconfig.json --noEmit --extendedDiagnostics', {encoding: 'utf8'});
+const output = execSync(
+  'yarn tsc -p packages/app/tsconfig.json --noEmit --extendedDiagnostics',
+  {encoding: 'utf8'},
+);
 
 function pick(label) {
   const match = output.match(new RegExp(`${label}:\\s+([\\d.]+)`));
@@ -35,8 +38,22 @@ const memoryKb = pick('Memory used');
 const inst = pick('Instantiations');
 const types = pick('Types');
 
-console.log(`\n${colors.bold}${colors.cyan}🚀 TypeScript Perf Report${colors.reset}\n`);
-console.log(`${colors.green}⏳ Time${colors.reset}             ${checkTime.toFixed(2)} s`);
-console.log(`${colors.yellow}🧠 Memory${colors.reset}           ${formatMemory(memoryKb)}`);
-console.log(`${colors.magenta}🔁 Instantiations${colors.reset}   ${formatNumber(inst)}`);
-console.log(`${colors.cyan}🧩 Types${colors.reset}            ${formatNumber(types)}\n`);
+console.log(
+  `\n${colors.bold}${colors.cyan}🚀 TypeScript Perf Report${colors.reset}\n`,
+);
+
+console.log(
+  `${colors.green}⏳ Time${colors.reset}             ${checkTime.toFixed(2)} s`,
+);
+
+console.log(
+  `${colors.yellow}🧠 Memory${colors.reset}           ${formatMemory(memoryKb)}`,
+);
+
+console.log(
+  `${colors.magenta}🔁 Instantiations${colors.reset}   ${formatNumber(inst)}`,
+);
+
+console.log(
+  `${colors.cyan}🧩 Types${colors.reset}            ${formatNumber(types)}\n`,
+);

@@ -24,7 +24,9 @@ export const BooksPage = observer(() => {
       <h1>{t('Книги')}</h1>
       <ul className={pageListStyles.list}>
         {$booksStore.getBooks.data?.map((book) => {
-          const bookPath = APP_ROUTES['/authors/author/:authorId/books/:bookId'].getDynamic({
+          const bookPath = APP_ROUTES[
+            '/authors/author/:authorId/books/:bookId'
+          ].getDynamic({
             authorId: book.authorId,
             bookId: book.id,
           });
@@ -37,18 +39,24 @@ export const BooksPage = observer(() => {
               <FavoriteButton
                 isFavorite={book.isFavorite}
                 onClick={() => {
-                  $booksStore.updateBookFavorite.run({id: book.id, isFavorite: !book.isFavorite}).then((result) => {
-                    if (result.status === 'success') {
-                      $booksStore.getBooks.run();
-                    }
-                  });
+                  $booksStore.updateBookFavorite
+                    .run({id: book.id, isFavorite: !book.isFavorite})
+                    .then((result) => {
+                      if (result.status === 'success') {
+                        $booksStore.getBooks.run();
+                      }
+                    });
                 }}
               />
             </li>
           );
         })}
       </ul>
-      <p>{t('Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.')}</p>
+      <p>
+        {t(
+          'Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.',
+        )}
+      </p>
     </section>
   );
 });

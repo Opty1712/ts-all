@@ -6,7 +6,10 @@ import {abortAddon, queryStringAddon} from 'wretch/addons';
 import {WretchError} from 'wretch/resolver';
 
 /** Создаем базового клиента, тут всякие авторизации и другие особенности вашего окружения */
-const baseClient = wretch(APP_CONFIG.API_URL).addon(abortAddon()).addon(queryStringAddon).errorType('json');
+const baseClient = wretch(APP_CONFIG.API_URL)
+  .addon(abortAddon())
+  .addon(queryStringAddon)
+  .errorType('json');
 
 /** Создаем стандартные методы CRUD */
 export const apiClient = {
@@ -20,23 +23,35 @@ export const apiClient = {
 
       return {data, error: null, code: response.status};
     } catch (error) {
-      const code = error instanceof Error && 'status' in error ? Number(error.status) : 500;
+      const code =
+        error instanceof Error && 'status' in error
+          ? Number(error.status)
+          : 500;
 
       return {data: null, error: parseWretchError<ErrorBodyType>(error), code};
     }
   },
 
-  post: async <ResponseBodyType, RequestBodyType = unknown, ErrorBodyType = null>(
+  post: async <
+    ResponseBodyType,
+    RequestBodyType = unknown,
+    ErrorBodyType = null,
+  >(
     path: string,
     body: RequestBodyType,
   ): Promise<Answer<ResponseBodyType, ErrorBodyType>> => {
     try {
       const response = await baseClient.url(path).post(body).res();
-      const result: ResponseBodyType = response.status === 204 ? {} : await response.json();
+
+      const result: ResponseBodyType =
+        response.status === 204 ? {} : await response.json();
 
       return {data: result, error: null, code: response.status};
     } catch (error) {
-      const code = error instanceof Error && 'status' in error ? Number(error.status) : 500;
+      const code =
+        error instanceof Error && 'status' in error
+          ? Number(error.status)
+          : 500;
 
       return {data: null, error: parseWretchError<ErrorBodyType>(error), code};
     }
@@ -53,14 +68,32 @@ export type Answer<ResponseBodyType, ErrorBodyType = null> = {
 
 /** Возвращаем всегда ошибку в виде объекта BaseErrorResponse,
  *  на страницах сможем вытаскивать все поля ответа в ключе error */
-const parseWretchError = <ErrorBodyType>(error: unknown): BaseErrorResponse<ErrorBodyType | null> => {
+const parseWretchError = <ErrorBodyType>(
+  error: unknown,
+): BaseErrorResponse<ErrorBodyType | null> => {
   if (error instanceof WretchError) {
-    return {code: 'ERROR', body: null, message: t('Произошла ошибка'), timestamp: Date.now().toString(), ...error.json};
+    return {
+      code: 'ERROR',
+      body: null,
+      message: t('Произошла ошибка'),
+      timestamp: Date.now().toString(),
+      ...error.json,
+    };
   }
 
   if (error instanceof Error) {
-    return {code: 'ERROR', body: null, message: error?.message, timestamp: Date.now().toString()};
+    return {
+      code: 'ERROR',
+      body: null,
+      message: error?.message,
+      timestamp: Date.now().toString(),
+    };
   }
 
-  return {code: 'ERROR', body: null, message: t('Произошла ошибка'), timestamp: Date.now().toString()};
+  return {
+    code: 'ERROR',
+    body: null,
+    message: t('Произошла ошибка'),
+    timestamp: Date.now().toString(),
+  };
 };

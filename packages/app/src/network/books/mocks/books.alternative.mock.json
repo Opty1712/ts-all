@@ -1,5 +1,12 @@
 [
-  {"id": "301", "authorId": "3", "title": "Demo Story Book", "year": 2024, "priceKopecks": 120000, "isFavorite": true},
+  {
+    "id": "301",
+    "authorId": "3",
+    "title": "Demo Story Book",
+    "year": 2024,
+    "priceKopecks": 120000,
+    "isFavorite": true
+  },
   {
     "id": "302",
     "authorId": "3",

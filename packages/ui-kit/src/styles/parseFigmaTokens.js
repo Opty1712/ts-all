@@ -91,7 +91,11 @@ async function parseTokensAndGenerateFiles() {
     const resolvedTokens = structuredClone(tokens);
 
     function resolveValue(value) {
-      if (typeof value === 'string' && value.startsWith('{') && value.endsWith('}')) {
+      if (
+        typeof value === 'string' &&
+        value.startsWith('{') &&
+        value.endsWith('}')
+      ) {
         const refPath = value.slice(1, -1);
 
         return baseColors[refPath] || value;
@@ -154,11 +158,14 @@ async function parseTokensAndGenerateFiles() {
     «0px 0px 2px 0px #0000001a, 0px 2px 2px 0px "#00000033»
     * */
     function getShadowValue(value) {
-      const shadow = value.reduce((accumulator, {offsetX, offsetY, blur, spread, color}, index) => {
-        const comma = index < value.length - 1 ? ', ' : '';
+      const shadow = value.reduce(
+        (accumulator, {offsetX, offsetY, blur, spread, color}, index) => {
+          const comma = index < value.length - 1 ? ', ' : '';
 
-        return `${accumulator}${offsetX} ${offsetY} ${blur} ${spread} ${color}${comma}`;
-      }, '');
+          return `${accumulator}${offsetX} ${offsetY} ${blur} ${spread} ${color}${comma}`;
+        },
+        '',
+      );
 
       return shadow;
     }
@@ -173,7 +180,9 @@ async function parseTokensAndGenerateFiles() {
           clonedElevation[key].$value.forEach((shadow) => {
             if (shadow.color?.startsWith(prefix)) {
               const shadowKey = shadow.color.slice(prefix.length, -1);
-              shadow.color = shadowColors.core.shadow[shadowKey].$value || shadow.color;
+
+              shadow.color =
+                shadowColors.core.shadow[shadowKey].$value || shadow.color;
             }
           });
 
@@ -197,7 +206,10 @@ async function parseTokensAndGenerateFiles() {
 
     for (const key in palette) {
       if (palette[key].$type === 'color') {
-        if (palette[key].$value.startsWith('{') && palette[key].$value.endsWith('}')) {
+        if (
+          palette[key].$value.startsWith('{') &&
+          palette[key].$value.endsWith('}')
+        ) {
           const refPath = palette[key].$value.slice(1, -1).split('.');
           let refValue = tokens;
 
@@ -246,10 +258,25 @@ async function parseTokensAndGenerateFiles() {
     const {lightShadows, darkShadows} = getShadows(shadowsData, baseColors);
 
     /** Получаем Rainbow и добавляем их в темы */
-    lightThemeData[rainbowContent] = resolveB2CColors(lightReferences, rainbowContent);
-    darkThemeData[rainbowContent] = resolveB2CColors(darkReferences, rainbowContent);
-    lightThemeData[rainbowSurface] = resolveB2CColors(lightReferences, rainbowSurface);
-    darkThemeData[rainbowSurface] = resolveB2CColors(darkReferences, rainbowSurface);
+    lightThemeData[rainbowContent] = resolveB2CColors(
+      lightReferences,
+      rainbowContent,
+    );
+
+    darkThemeData[rainbowContent] = resolveB2CColors(
+      darkReferences,
+      rainbowContent,
+    );
+
+    lightThemeData[rainbowSurface] = resolveB2CColors(
+      lightReferences,
+      rainbowSurface,
+    );
+
+    darkThemeData[rainbowSurface] = resolveB2CColors(
+      darkReferences,
+      rainbowSurface,
+    );
 
     /** Получаем Overlay и добавляем их в темы */
     lightThemeData[overlay] = resolveB2CColors(lightReferences, overlay);
@@ -297,7 +324,9 @@ async function parseTokensAndGenerateFiles() {
 
     return string
       .split(symbolsToSplitBy)
-      .map((item, index) => (index ? uppercaseFirstSymbol(item) : lowercaseFirstSymbol(item)))
+      .map((item, index) =>
+        index ? uppercaseFirstSymbol(item) : lowercaseFirstSymbol(item),
+      )
       .join('');
   }
 
@@ -307,7 +336,10 @@ async function parseTokensAndGenerateFiles() {
 
     for (const [category, values] of Object.entries(colors)) {
       for (const [key, value] of Object.entries(values)) {
-        const camelCaseKey = convertToCamelCase(`${prefix || ''}${category}.${key}`);
+        const camelCaseKey = convertToCamelCase(
+          `${prefix || ''}${category}.${key}`,
+        );
+
         theme[camelCaseKey] = typeof value === 'string' ? value : value.$value;
       }
     }
@@ -328,9 +360,18 @@ async function parseTokensAndGenerateFiles() {
   }
 
   /** Генерируем и сохраняем массив финальных класснеймов, используемых в TailWind */
-  function saveTWClassNames(palette, spacingTokens, borderRadiusTokens, shadowTokens) {
+  function saveTWClassNames(
+    palette,
+    spacingTokens,
+    borderRadiusTokens,
+    shadowTokens,
+  ) {
     /** Получаем массив класснеймов, определенного префиксом типа */
-    function getTWClassNamesChunk(palette, prefix, exportPrefix = 'export const') {
+    function getTWClassNamesChunk(
+      palette,
+      prefix,
+      exportPrefix = 'export const',
+    ) {
       const classNames = Object.keys(palette).reduce((accumulator, key) => {
         accumulator.push(`'${prefix}-${convertToCamelCase(key)}'`);
 
@@ -372,12 +413,26 @@ async function parseTokensAndGenerateFiles() {
 
     /** Получаем все CSS переменные: цвета, spacing, borderRadius, boxShadow */
     const colorVars = getCSSVarsChunk(palette);
-    const spacingVars = getCSSVarsChunk(generateTokenColors({spacing: spacingTokens}, ''));
-    const borderRadiusVars = getCSSVarsChunk(generateTokenColors({borderRadius: borderRadiusTokens}, ''));
-    const boxShadowVars = getCSSVarsChunk(generateTokenColors({Elevation: shadowTokens}, 'boxShadow.'));
+
+    const spacingVars = getCSSVarsChunk(
+      generateTokenColors({spacing: spacingTokens}, ''),
+    );
+
+    const borderRadiusVars = getCSSVarsChunk(
+      generateTokenColors({borderRadius: borderRadiusTokens}, ''),
+    );
+
+    const boxShadowVars = getCSSVarsChunk(
+      generateTokenColors({Elevation: shadowTokens}, 'boxShadow.'),
+    );
 
     /** Объединяем все переменные */
-    const allCssVars = [...colorVars, ...spacingVars, ...borderRadiusVars, ...boxShadowVars];
+    const allCssVars = [
+      ...colorVars,
+      ...spacingVars,
+      ...borderRadiusVars,
+      ...boxShadowVars,
+    ];
 
     /** Сохраняем TS файл со всеми константами */
     const cssVarsContent = getCSSVarsConstChunk(allCssVars);
@@ -438,34 +493,59 @@ html.dark {${convertPaletteToCSSVars(tailwindDarkColors)}
       }, {});
     }
 
-    const shadowColors = generateTokenColors({Elevation: jsonTokens.shadows.darkShadows}, 'boxShadow.');
+    const shadowColors = generateTokenColors(
+      {Elevation: jsonTokens.shadows.darkShadows},
+      'boxShadow.',
+    );
+
     const boxShadow = getShadowPaletteAsCSSVars(shadowColors);
 
     const nonColorPalettes = {
       spacing: generateTokenColors({spacing: jsonTokens.spacing}, ''),
-      borderRadius: generateTokenColors({borderRadius: jsonTokens.borderRadius}, ''),
+      borderRadius: generateTokenColors(
+        {borderRadius: jsonTokens.borderRadius},
+        '',
+      ),
       boxShadow,
     };
 
-    const theme = Object.keys(themeKeysToVariableKeys).reduce((accumulator, current) => {
-      const paletteKey = themeKeysToVariableKeys[current];
-      accumulator[current] = nonColorPalettes[paletteKey];
+    const theme = Object.keys(themeKeysToVariableKeys).reduce(
+      (accumulator, current) => {
+        const paletteKey = themeKeysToVariableKeys[current];
+        accumulator[current] = nonColorPalettes[paletteKey];
 
-      return accumulator;
-    }, {});
+        return accumulator;
+      },
+      {},
+    );
 
     writeFileSync(tailwindThemeFile, JSON.stringify(theme, null, 2));
   }
 
   /** На основании полученного JSON создает файлы для Tailwind */
   function generateFiles(jsonTokens) {
-    const tailwindBaseColors = generateTokenColors(jsonTokens.colors.baseColorsPalette, '');
+    const tailwindBaseColors = generateTokenColors(
+      jsonTokens.colors.baseColorsPalette,
+      '',
+    );
 
-    const tailwindDarkColors = generateTokenColors(jsonTokens.colors.darkThemePalette);
-    writeFileSync(tailwindDarkColorsFile, JSON.stringify({...tailwindDarkColors, ...tailwindBaseColors}, null, 2));
+    const tailwindDarkColors = generateTokenColors(
+      jsonTokens.colors.darkThemePalette,
+    );
 
-    const tailwindLightColors = generateTokenColors(jsonTokens.colors.lightThemePalette);
-    writeFileSync(tailwindLightColorsFile, JSON.stringify({...tailwindLightColors, ...tailwindBaseColors}, null, 2));
+    writeFileSync(
+      tailwindDarkColorsFile,
+      JSON.stringify({...tailwindDarkColors, ...tailwindBaseColors}, null, 2),
+    );
+
+    const tailwindLightColors = generateTokenColors(
+      jsonTokens.colors.lightThemePalette,
+    );
+
+    writeFileSync(
+      tailwindLightColorsFile,
+      JSON.stringify({...tailwindLightColors, ...tailwindBaseColors}, null, 2),
+    );
 
     saveCSSVars({
       tailwindLightColors,

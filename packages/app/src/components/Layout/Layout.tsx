@@ -14,8 +14,14 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
   const {$ftStore} = useStores();
   const [location, navigate] = useLocation();
   const currentRoute = getRouteByPath(location);
-  const isDarkThemeAllowedByToggle = $ftStore.getFTConfig.data.DARK_THEME_ENABLED;
-  const isDarkThemeRoute = currentRoute ? getRouteParam(currentRoute, 'isDarkTheme') : false;
+
+  const isDarkThemeAllowedByToggle =
+    $ftStore.getFTConfig.data.DARK_THEME_ENABLED;
+
+  const isDarkThemeRoute = currentRoute
+    ? getRouteParam(currentRoute, 'isDarkTheme')
+    : false;
+
   const isDarkTheme = isDarkThemeAllowedByToggle && isDarkThemeRoute;
   const currentLanguage = i18n.resolvedLanguage?.startsWith('en') ? 'en' : 'ru';
 
@@ -24,13 +30,27 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
   }, [$ftStore]);
 
   const menuItems = [
-    {label: t('Главная'), path: APP_ROUTES['/'].path, testId: layoutDataTestIds.menuTopHome},
-    {label: t('Авторы'), path: APP_ROUTES['/authors'].path, testId: layoutDataTestIds.menuTopAuthors},
-    {label: t('Книги'), path: APP_ROUTES['/authors/books'].path, testId: layoutDataTestIds.menuTopBooks},
+    {
+      label: t('Главная'),
+      path: APP_ROUTES['/'].path,
+      testId: layoutDataTestIds.menuTopHome,
+    },
+    {
+      label: t('Авторы'),
+      path: APP_ROUTES['/authors'].path,
+      testId: layoutDataTestIds.menuTopAuthors,
+    },
+    {
+      label: t('Книги'),
+      path: APP_ROUTES['/authors/books'].path,
+      testId: layoutDataTestIds.menuTopBooks,
+    },
   ];
 
   return (
-    <div className={classnames(styles.layout, isDarkTheme && styles.layoutDark)}>
+    <div
+      className={classnames(styles.layout, isDarkTheme && styles.layoutDark)}
+    >
       <header className={styles.header} data-testid={layoutDataTestIds.header}>
         <nav className={styles.menu}>
           {menuItems.map((item) => {
@@ -39,7 +59,10 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
             return (
               <button
                 key={item.path}
-                className={classnames(styles.menuItem, isActive && styles.menuItemActive)}
+                className={classnames(
+                  styles.menuItem,
+                  isActive && styles.menuItemActive,
+                )}
                 type="button"
                 data-testid={item.testId}
                 onClick={() => {
@@ -55,7 +78,10 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
         <div className={styles.localeSwitcher}>
           <button
             type="button"
-            className={classnames(styles.localeButton, currentLanguage === 'ru' && styles.localeButtonActive)}
+            className={classnames(
+              styles.localeButton,
+              currentLanguage === 'ru' && styles.localeButtonActive,
+            )}
             onClick={() => {
               i18n.changeLanguage('ru');
             }}
@@ -64,7 +90,10 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
           </button>
           <button
             type="button"
-            className={classnames(styles.localeButton, currentLanguage === 'en' && styles.localeButtonActive)}
+            className={classnames(
+              styles.localeButton,
+              currentLanguage === 'en' && styles.localeButtonActive,
+            )}
             onClick={() => {
               i18n.changeLanguage('en');
             }}

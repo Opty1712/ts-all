@@ -1,5 +1,10 @@
 import {adaptBookFromBackend} from '@/network/books/adaptBook';
-import {getAuthorBooks, getBook, getBooks, updateBookFavorite} from '@/network/books/booksApi';
+import {
+  getAuthorBooks,
+  getBook,
+  getBooks,
+  updateBookFavorite,
+} from '@/network/books/booksApi';
 import {
   Book,
   RawAuthorBooksResponse,
@@ -15,10 +20,25 @@ type GetAuthorBooksParams = {authorId: string};
 type GetBookParams = {authorId: string; bookId: string};
 
 export class BooksStore extends BaseStore {
-  @observable public accessor getBooks: Getter<void, RawBooksResponse, Array<Book>>;
-  @observable public accessor getAuthorBooks: Getter<GetAuthorBooksParams, RawAuthorBooksResponse, Array<Book>>;
-  @observable public accessor getBook: Getter<GetBookParams, RawBookResponse, Book | null>;
-  @observable public accessor updateBookFavorite: Updater<UpdateBookFavoriteRequest, RawBookResponse>;
+  @observable public accessor getBooks: Getter<
+    void,
+    RawBooksResponse,
+    Array<Book>
+  >;
+  @observable public accessor getAuthorBooks: Getter<
+    GetAuthorBooksParams,
+    RawAuthorBooksResponse,
+    Array<Book>
+  >;
+  @observable public accessor getBook: Getter<
+    GetBookParams,
+    RawBookResponse,
+    Book | null
+  >;
+  @observable public accessor updateBookFavorite: Updater<
+    UpdateBookFavoriteRequest,
+    RawBookResponse
+  >;
 
   constructor() {
     super();
@@ -30,18 +50,29 @@ export class BooksStore extends BaseStore {
       adaptDataFromBackend: ({books}) => books.map(adaptBookFromBackend),
     });
 
-    this.getAuthorBooks = this.createGetter<GetAuthorBooksParams, RawAuthorBooksResponse, Array<Book>>({
+    this.getAuthorBooks = this.createGetter<
+      GetAuthorBooksParams,
+      RawAuthorBooksResponse,
+      Array<Book>
+    >({
       fetchFn: getAuthorBooks,
       defaultData: [],
       adaptDataFromBackend: ({books}) => books.map(adaptBookFromBackend),
     });
 
-    this.getBook = this.createGetter<GetBookParams, RawBookResponse, Book | null>({
+    this.getBook = this.createGetter<
+      GetBookParams,
+      RawBookResponse,
+      Book | null
+    >({
       fetchFn: getBook,
       defaultData: null,
       adaptDataFromBackend: ({book}) => adaptBookFromBackend(book),
     });
 
-    this.updateBookFavorite = this.createUpdater<UpdateBookFavoriteRequest, RawBookResponse>(updateBookFavorite);
+    this.updateBookFavorite = this.createUpdater<
+      UpdateBookFavoriteRequest,
+      RawBookResponse
+    >(updateBookFavorite);
   }
 }

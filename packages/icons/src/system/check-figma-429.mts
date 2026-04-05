@@ -11,11 +11,13 @@ const svgDir = resolve(process.cwd(), 'tmp/svgImported');
 const figmaConfigPath = resolve(process.cwd(), '.figmaexportrc.js');
 const require = createRequire(import.meta.url);
 
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
 
 const getFigmaFileIdFromConfig = (): string => {
   const loaded: unknown = require(figmaConfigPath);
-  const config = isRecord(loaded) && 'default' in loaded ? loaded.default : loaded;
+  const config =
+    isRecord(loaded) && 'default' in loaded ? loaded.default : loaded;
 
   if (!isRecord(config) || !Array.isArray(config.commands)) {
     throw new Error(`Не удалось прочитать commands из "${figmaConfigPath}".`);
@@ -35,7 +37,9 @@ const getFigmaFileIdFromConfig = (): string => {
     }
   }
 
-  throw new Error(`Не удалось прочитать components.fileId из "${figmaConfigPath}".`);
+  throw new Error(
+    `Не удалось прочитать components.fileId из "${figmaConfigPath}".`,
+  );
 };
 
 const FIGMA_FILE_ID = getFigmaFileIdFromConfig();
@@ -59,7 +63,8 @@ const pluralRu = (value: number, forms: [string, string, string]): string => {
   const mod100 = value % 100;
 
   if (mod10 === 1 && mod100 !== 11) return forms[0];
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return forms[1];
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20))
+    return forms[1];
   return forms[2];
 };
 
@@ -69,8 +74,10 @@ const formatRetryIn = (totalSeconds: number): string => {
   const hours = totalHours % 24;
 
   const parts: string[] = [];
-  if (days > 0) parts.push(`${days} ${pluralRu(days, ['день', 'дня', 'дней'])}`);
-  if (hours > 0) parts.push(`${hours} ${pluralRu(hours, ['час', 'часа', 'часов'])}`);
+  if (days > 0)
+    parts.push(`${days} ${pluralRu(days, ['день', 'дня', 'дней'])}`);
+  if (hours > 0)
+    parts.push(`${hours} ${pluralRu(hours, ['час', 'часа', 'часов'])}`);
 
   if (parts.length === 0) {
     return `1 ${pluralRu(1, ['час', 'часа', 'часов'])}`;
@@ -80,7 +87,10 @@ const formatRetryIn = (totalSeconds: number): string => {
 };
 
 const formatRetryDateRu = (date: Date): string => {
-  const dayMonth = new Intl.DateTimeFormat('ru-RU', {day: 'numeric', month: 'long'}).format(date);
+  const dayMonth = new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+  }).format(date);
   const hh = String(date.getHours()).padStart(2, '0');
   const mm = String(date.getMinutes()).padStart(2, '0');
 
@@ -102,7 +112,9 @@ const runFigmaExport = async (): Promise<void> =>
         return;
       }
 
-      rejectPromise(new Error(`figma-export завершился с кодом ${code ?? 'unknown'}`));
+      rejectPromise(
+        new Error(`figma-export завершился с кодом ${code ?? 'unknown'}`),
+      );
     });
   });
 
@@ -115,7 +127,10 @@ const hasImportedSvgs = async (): Promise<boolean> => {
   }
 };
 
-const buildRateLimitMessage = (retryAfterSeconds: number, headers: Headers): string => {
+const buildRateLimitMessage = (
+  retryAfterSeconds: number,
+  headers: Headers,
+): string => {
   const retryAt = new Date(Date.now() + retryAfterSeconds * 1000);
   const planTier = headers.get('x-figma-plan-tier') ?? 'неизвестно';
   const limitType = headers.get('x-figma-rate-limit-type') ?? 'неизвестно';
@@ -132,7 +147,8 @@ ${recommendations}`;
 };
 
 const buildAuthErrorMessage = (status: 401 | 403, headers: Headers): string => {
-  const requestId = headers.get('x-request-id') ?? headers.get('x-figma-request-id');
+  const requestId =
+    headers.get('x-request-id') ?? headers.get('x-figma-request-id');
   const planTier = headers.get('x-figma-plan-tier');
 
   if (status === 401) {
@@ -172,7 +188,9 @@ const buildAuthErrorMessage = (status: 401 | 403, headers: Headers): string => {
 const fetchFileInfo = async (): Promise<Response> => {
   const token = process.env.FIGMA_TOKEN;
   if (!token) {
-    throw new Error('Не задан FIGMA_TOKEN. Без токена экспорт из Figma невозможен.');
+    throw new Error(
+      'Не задан FIGMA_TOKEN. Без токена экспорт из Figma невозможен.',
+    );
   }
 
   return await fetch(`https://api.figma.com/v1/files/${FIGMA_FILE_ID}`, {
@@ -198,7 +216,9 @@ const assertNoRateLimitBeforeImport = async (): Promise<void> => {
   }
 
   if (!response.ok) {
-    throw new Error(`Проверка Figma API не прошла: статус ${response.status} ${response.statusText}.`);
+    throw new Error(
+      `Проверка Figma API не прошла: статус ${response.status} ${response.statusText}.`,
+    );
   }
 };
 
@@ -216,7 +236,9 @@ const diagnoseImportFailure = async (): Promise<never> => {
   }
 
   if (response.status === 401 || response.status === 403) {
-    throw new Error(`Шаг импорта не создал "${svgDir}". ${buildAuthErrorMessage(response.status, response.headers)}`);
+    throw new Error(
+      `Шаг импорта не создал "${svgDir}". ${buildAuthErrorMessage(response.status, response.headers)}`,
+    );
   }
 
   if (!response.ok) {

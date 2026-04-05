@@ -1,6 +1,20 @@
 [
-  {"id": "101", "authorId": "1", "title": "1984", "year": 1949, "priceKopecks": 89000, "isFavorite": true},
-  {"id": "102", "authorId": "1", "title": "Animal Farm", "year": 1945, "priceKopecks": 76000, "isFavorite": false},
+  {
+    "id": "101",
+    "authorId": "1",
+    "title": "1984",
+    "year": 1949,
+    "priceKopecks": 89000,
+    "isFavorite": true
+  },
+  {
+    "id": "102",
+    "authorId": "1",
+    "title": "Animal Farm",
+    "year": 1945,
+    "priceKopecks": 76000,
+    "isFavorite": false
+  },
   {
     "id": "103",
     "authorId": "1",
@@ -25,6 +39,20 @@
     "priceKopecks": 87000,
     "isFavorite": true
   },
-  {"id": "203", "authorId": "2", "title": "Emma", "year": 1815, "priceKopecks": 92000, "isFavorite": false},
-  {"id": "204", "authorId": "2", "title": "Persuasion", "year": 1817, "priceKopecks": 84000, "isFavorite": false}
+  {
+    "id": "203",
+    "authorId": "2",
+    "title": "Emma",
+    "year": 1815,
+    "priceKopecks": 92000,
+    "isFavorite": false
+  },
+  {
+    "id": "204",
+    "authorId": "2",
+    "title": "Persuasion",
+    "year": 1817,
+    "priceKopecks": 84000,
+    "isFavorite": false
+  }
 ]

@@ -36,11 +36,15 @@ export const AuthorPage = observer(() => {
     return <p>{t('Автор не найден')}</p>;
   }
 
-  if (ALLOWED_AUTHORS_ID.length > 0 && !ALLOWED_AUTHORS_ID.includes(author.id)) {
+  if (
+    ALLOWED_AUTHORS_ID.length > 0 &&
+    !ALLOWED_AUTHORS_ID.includes(author.id)
+  ) {
     return <p>{t('Автор не найден')}</p>;
   }
 
-  const booksPath = APP_ROUTES['/authors/author/:authorId/books'].getDynamic(authorId);
+  const booksPath =
+    APP_ROUTES['/authors/author/:authorId/books'].getDynamic(authorId);
 
   return (
     <section>
@@ -49,18 +53,24 @@ export const AuthorPage = observer(() => {
         <FavoriteButton
           isFavorite={author.isFavorite}
           onClick={() => {
-            $authorsStore.updateAuthorFavorite.run({id: author.id, isFavorite: !author.isFavorite}).then((result) => {
-              if (result.status === 'success') {
-                $authorsStore.getAuthor.run({authorId});
-              }
-            });
+            $authorsStore.updateAuthorFavorite
+              .run({id: author.id, isFavorite: !author.isFavorite})
+              .then((result) => {
+                if (result.status === 'success') {
+                  $authorsStore.getAuthor.run({authorId});
+                }
+              });
           }}
         />
       </h1>
       <p>
         <Link href={booksPath}>{t('Все книги автора')}</Link>
       </p>
-      <p>{t('Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.')}</p>
+      <p>
+        {t(
+          'Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.',
+        )}
+      </p>
     </section>
   );
 });

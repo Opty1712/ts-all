@@ -8,27 +8,36 @@ type IconSet = Record<
   FC<DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>>
 >;
 
-function getKeys<T extends Record<string | number | symbol, unknown>>(object: T): Array<keyof T> {
+function getKeys<T extends Record<string | number | symbol, unknown>>(
+  object: T,
+): Array<keyof T> {
   return Object.keys(object) as Array<keyof T>;
 }
 
 const capsAndDigits = /(\d+|[A-Z])/g;
 
 const getIconSet = () => {
-  const iconSet = getKeys(SomeVKProject).reduce<IconSet>((accumulator, name) => {
-    const a11yName = name.replace(capsAndDigits, ' $&');
+  const iconSet = getKeys(SomeVKProject).reduce<IconSet>(
+    (accumulator, name) => {
+      const a11yName = name.replace(capsAndDigits, ' $&');
 
-    accumulator[name] = ({className = '', ...props}) => {
-      return (
-        <>
-          <i aria-hidden="true" {...props} className={`${SomeVKProject[name]} ${className}`} />
-          <span className={styles.srOnly}>{a11yName}</span>
-        </>
-      );
-    };
+      accumulator[name] = ({className = '', ...props}) => {
+        return (
+          <>
+            <i
+              aria-hidden="true"
+              {...props}
+              className={`${SomeVKProject[name]} ${className}`}
+            />
+            <span className={styles.srOnly}>{a11yName}</span>
+          </>
+        );
+      };
 
-    return accumulator;
-  }, {} as IconSet);
+      return accumulator;
+    },
+    {} as IconSet,
+  );
 
   return iconSet;
 };

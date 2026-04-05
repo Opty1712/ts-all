@@ -98,7 +98,8 @@ export const countries = {
   Congo: 'Конго',
   'Congo, Democratic Republic of the': 'Конго, Демократическая Республика',
   // eslint-disable-next-line quotes
-  "Korea, Democratic People's Republic of Korea": 'Корея, Народно-Демократическая Республика',
+  "Korea, Democratic People's Republic of Korea":
+    'Корея, Народно-Демократическая Республика',
   'Korea, Republic of Korea': 'Корея, Республика',
   'Costa Rica': 'Коста-Рика',
   // eslint-disable-next-line quotes
@@ -124,7 +125,8 @@ export const countries = {
   Malawi: 'Малави',
   Malaysia: 'Малайзия',
   Mali: 'Мали',
-  'United States Minor Outlying Islands': 'Малые Тихоокеанские отдаленные острова Соединенных Штатов',
+  'United States Minor Outlying Islands':
+    'Малые Тихоокеанские отдаленные острова Соединенных Штатов',
   Maldives: 'Мальдивы',
   Malta: 'Мальта',
   Morocco: 'Марокко',
@@ -163,7 +165,8 @@ export const countries = {
   Palau: 'Палау',
   'Palestinian Territory, Occupied': 'Палестина, государство',
   Panama: 'Панама',
-  'Holy See (Vatican City State)': 'Папский Престол (Государство — город Ватикан)',
+  'Holy See (Vatican City State)':
+    'Папский Престол (Государство — город Ватикан)',
   'Papua New Guinea': 'Папуа-Новая Гвинея',
   Paraguay: 'Парагвай',
   Peru: 'Перу',
@@ -180,7 +183,8 @@ export const countries = {
   'San Marino': 'Сан-Марино',
   'Sao Tome and Principe': 'Сан-Томе и Принсипи',
   'Saudi Arabia': 'Саудовская Аравия',
-  'Saint Helena, Ascension And Tristan Da Cunha': 'Святая Елена, Остров вознесения, Тристан-да-Кунья',
+  'Saint Helena, Ascension And Tristan Da Cunha':
+    'Святая Елена, Остров вознесения, Тристан-да-Кунья',
   'Northern Mariana Islands': 'Северные Марианские острова',
   Serbia: 'Сербия',
   Seychelles: 'Сейшелы',
@@ -248,7 +252,8 @@ export const countries = {
   Estonia: 'Эстония',
   Ethiopia: 'Эфиопия',
   'South Africa': 'Южная Африка',
-  'South Georgia and the South Sandwich Islands': 'Южная Джорджия и Южные Сандвичевы острова',
+  'South Georgia and the South Sandwich Islands':
+    'Южная Джорджия и Южные Сандвичевы острова',
   'South Ossetia': 'Южная Осетия',
   'South Sudan': 'Южный Судан',
   Jamaica: 'Ямайка',

@@ -38,8 +38,12 @@
 </style>
 
 <script>
-  var iframe = document.location && document.location.ancestorOrigins && document.location.ancestorOrigins.length;
-  var isOpenedFromStorybook = document.referrer && document.referrer.indexOf('?path=/story') !== -1;
+  var iframe =
+    document.location &&
+    document.location.ancestorOrigins &&
+    document.location.ancestorOrigins.length;
+  var isOpenedFromStorybook =
+    document.referrer && document.referrer.indexOf('?path=/story') !== -1;
 
   if (!iframe && !isOpenedFromStorybook) {
     document.documentElement.classList.add('animation-disabled');

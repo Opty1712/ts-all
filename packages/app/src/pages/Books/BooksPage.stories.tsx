@@ -16,7 +16,9 @@ const useDecorator: Decorator<BooksPageStoryArgs> = (Story, {args}) => {
   const {$booksStore} = useStores();
 
   useLayoutEffect(() => {
-    $booksStore.getBooks.updateData(BOOKS_PAGE_MOCKS[args.booksMock ?? 'BOOKS_DEFAULT']);
+    $booksStore.getBooks.updateData(
+      BOOKS_PAGE_MOCKS[args.booksMock ?? 'BOOKS_DEFAULT'],
+    );
   }, [$booksStore, args.booksMock]);
 
   return <Story args={args} />;

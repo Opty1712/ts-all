@@ -36,7 +36,9 @@ const getRequestData = (req: IncomingMessage) => {
 };
 
 const stripApiPrefix = (pathname: string, apiPrefix: string) => {
-  const normalizedPrefix = apiPrefix.endsWith('/') ? apiPrefix.slice(0, -1) : apiPrefix;
+  const normalizedPrefix = apiPrefix.endsWith('/')
+    ? apiPrefix.slice(0, -1)
+    : apiPrefix;
 
   if (!pathname.startsWith(normalizedPrefix)) {
     return pathname;
@@ -61,7 +63,10 @@ const readJsonBody = async <T>(req: IncomingMessage): Promise<T | null> => {
   return JSON.parse(Buffer.concat(chunks).toString('utf-8')) as T;
 };
 
-export const startMockServer = (port = DEFAULT_PORT, apiPrefix = DEFAULT_API_PREFIX) => {
+export const startMockServer = (
+  port = DEFAULT_PORT,
+  apiPrefix = DEFAULT_API_PREFIX,
+) => {
   const authorsState = authors.map((author) => ({...author}));
   const booksState = books.map((book) => ({...book}));
 
@@ -167,7 +172,9 @@ export const startMockServer = (port = DEFAULT_PORT, apiPrefix = DEFAULT_API_PRE
         return;
       }
 
-      const filteredBooks = author ? booksState.filter((item) => item.authorId === author) : booksState;
+      const filteredBooks = author
+        ? booksState.filter((item) => item.authorId === author)
+        : booksState;
 
       json(res, 200, {books: filteredBooks});
 
@@ -205,7 +212,9 @@ export const startMockServer = (port = DEFAULT_PORT, apiPrefix = DEFAULT_API_PRE
   });
 
   server.listen(port, () => {
-    console.log(`[mock-server] listening on http://localhost:${port}${apiPrefix}`);
+    console.log(
+      `[mock-server] listening on http://localhost:${port}${apiPrefix}`,
+    );
   });
 
   return server;

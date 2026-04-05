@@ -7,7 +7,12 @@ import pkg from '../../package.json';
 
 const target = convertTargetsForEsbuild();
 
-const externalPackages = ['react', 'react-dom', ...Object.keys(pkg.dependencies || {}), '@demo/icons'];
+const externalPackages = [
+  'react',
+  'react-dom',
+  ...Object.keys(pkg.dependencies || {}),
+  '@demo/icons',
+];
 
 const isProd = process.env.NODE_ENV === 'production';
 

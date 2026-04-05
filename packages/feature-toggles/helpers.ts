@@ -1,6 +1,8 @@
 import {ConfigSchema, FeatureToggleConfigResponseType} from './types';
 
-export const getDefaultConfig = <R extends Record<string, unknown>>(schema: ConfigSchema) => {
+export const getDefaultConfig = <R extends Record<string, unknown>>(
+  schema: ConfigSchema,
+) => {
   return Object.entries(schema).reduce(
     (accumulator, [key, {value}]) => {
       accumulator[key] = value.fallback;

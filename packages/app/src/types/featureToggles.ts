@@ -2,7 +2,9 @@ import {FeatureToggleConfigSchema} from '@/consts/featureToggles';
 
 import {InferConfigType} from '../../../feature-toggles';
 
-export type FeatureToggleConfig = InferConfigType<typeof FeatureToggleConfigSchema>;
+export type FeatureToggleConfig = InferConfigType<
+  typeof FeatureToggleConfigSchema
+>;
 
 export type FeatureToggleConfigVariable = keyof FeatureToggleConfig;
 

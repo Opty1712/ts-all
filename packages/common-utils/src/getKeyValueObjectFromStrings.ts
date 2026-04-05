@@ -24,7 +24,9 @@
  * // => { a: 'a' } (последнее значение перезапишет предыдущее)
  * ```
  */
-export const getKeyValueObjectFromStrings = <const T extends ReadonlyArray<string>>(
+export const getKeyValueObjectFromStrings = <
+  const T extends ReadonlyArray<string>,
+>(
   ids: T,
   isRepeatAllowed?: boolean,
 ) => {
@@ -32,5 +34,8 @@ export const getKeyValueObjectFromStrings = <const T extends ReadonlyArray<strin
     throw new Error('В массиве есть повторяющиеся значения');
   }
 
-  return Object.fromEntries(ids.map((id) => [id, id])) as Record<T[number], T[number]>;
+  return Object.fromEntries(ids.map((id) => [id, id])) as Record<
+    T[number],
+    T[number]
+  >;
 };

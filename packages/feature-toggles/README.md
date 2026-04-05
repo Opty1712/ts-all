@@ -42,7 +42,11 @@
 Реальный пример в проекте: `packages/app/src/consts/featureToggles.ts`.
 
 ```ts
-import {ConfigSchema, getBoolean, getStringArray} from '../../../feature-toggles';
+import {
+  ConfigSchema,
+  getBoolean,
+  getStringArray,
+} from '../../../feature-toggles';
 
 export const FeatureToggleConfigSchema = {
   DARK_THEME_ENABLED: {
@@ -63,7 +67,9 @@ import {FeatureToggleConfigSchema} from '@/consts/featureToggles';
 
 import {InferConfigType} from '../../../feature-toggles';
 
-export type FeatureToggleConfig = InferConfigType<typeof FeatureToggleConfigSchema>;
+export type FeatureToggleConfig = InferConfigType<
+  typeof FeatureToggleConfigSchema
+>;
 // {
 //   DARK_THEME_ENABLED: boolean;
 //   ALLOWED_AUTHORS_ID: string[];

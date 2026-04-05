@@ -14,7 +14,10 @@ export abstract class BasicClass<const T extends TestIds> {
     this.page = page;
 
     this.locators = Object.fromEntries(
-      Object.entries(testIds).map(([key, value]) => [key, page.getByTestId(value)]),
+      Object.entries(testIds).map(([key, value]) => [
+        key,
+        page.getByTestId(value),
+      ]),
     ) as Locators<T>;
   }
 }

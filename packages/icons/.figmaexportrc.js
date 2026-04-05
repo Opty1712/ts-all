@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 const outputComponentsAsSvgModule = require('@figma-export/output-components-as-svg');
-const outputComponentsAsSvg = outputComponentsAsSvgModule.default ?? outputComponentsAsSvgModule;
+
+const outputComponentsAsSvg =
+  outputComponentsAsSvgModule.default ?? outputComponentsAsSvgModule;
 
 /** @type {import('@figma-export/types').FigmaExportRC} */
 module.exports = {

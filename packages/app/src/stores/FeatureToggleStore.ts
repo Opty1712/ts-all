@@ -7,7 +7,12 @@ import {makeObservable, observable} from 'mobx';
 import {makeConfigSafe} from '../../../feature-toggles';
 
 export class FeatureToggleStore extends BaseStore {
-  @observable public accessor getFTConfig: Getter<void, FeatureToggleConfig, FeatureToggleConfig, true>;
+  @observable public accessor getFTConfig: Getter<
+    void,
+    FeatureToggleConfig,
+    FeatureToggleConfig,
+    true
+  >;
 
   constructor() {
     super();
@@ -16,8 +21,12 @@ export class FeatureToggleStore extends BaseStore {
     this.getFTConfig = this.createGetter({
       fetchFn: getFeatureToggleConfig,
       staleTimeMs: 10000,
-      adaptDataFromBackend: (data) => makeConfigSafe<FeatureToggleConfig>(FeatureToggleConfigSchema, data),
-      defaultData: makeConfigSafe<FeatureToggleConfig>(FeatureToggleConfigSchema, {}),
+      adaptDataFromBackend: (data) =>
+        makeConfigSafe<FeatureToggleConfig>(FeatureToggleConfigSchema, data),
+      defaultData: makeConfigSafe<FeatureToggleConfig>(
+        FeatureToggleConfigSchema,
+        {},
+      ),
     });
   }
 }

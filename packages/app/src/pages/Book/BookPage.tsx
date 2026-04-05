@@ -12,15 +12,23 @@ export const BookPage = observer(() => {
   const {t} = useTranslation();
 
   /** Получаем типизированный параметр роута */
-  const isDarkThemeRoute = getRouteParam(APP_ROUTES['/authors/author/:authorId/books/:bookId'], 'isDarkTheme');
+  const isDarkThemeRoute = getRouteParam(
+    APP_ROUTES['/authors/author/:authorId/books/:bookId'],
+    'isDarkTheme',
+  );
 
   /** Получаем параметры из URL в рантайме */
-  const [, params] = useRoute(APP_ROUTES['/authors/author/:authorId/books/:bookId'].path);
+  const [, params] = useRoute(
+    APP_ROUTES['/authors/author/:authorId/books/:bookId'].path,
+  );
+
   const authorId = params?.authorId || '';
   const bookId = params?.bookId || '';
 
   /** Собираем безопасный динамический путь */
-  const bookPath = APP_ROUTES['/authors/author/:authorId/books/:bookId'].getDynamic({
+  const bookPath = APP_ROUTES[
+    '/authors/author/:authorId/books/:bookId'
+  ].getDynamic({
     authorId,
     bookId,
   });
@@ -54,11 +62,13 @@ export const BookPage = observer(() => {
         <FavoriteButton
           isFavorite={book.isFavorite}
           onClick={() => {
-            $booksStore.updateBookFavorite.run({id: book.id, isFavorite: !book.isFavorite}).then((result) => {
-              if (result.status === 'success') {
-                $booksStore.getBook.run({authorId, bookId});
-              }
-            });
+            $booksStore.updateBookFavorite
+              .run({id: book.id, isFavorite: !book.isFavorite})
+              .then((result) => {
+                if (result.status === 'success') {
+                  $booksStore.getBook.run({authorId, bookId});
+                }
+              });
           }}
         />
       </h1>
@@ -69,7 +79,11 @@ export const BookPage = observer(() => {
       <p>
         {t('Цена')}: {book.price} {t('RUB')}
       </p>
-      <p>{t('Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.')}</p>
+      <p>
+        {t(
+          'Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.',
+        )}
+      </p>
     </section>
   );
 });

@@ -20,7 +20,9 @@ export const Badge = memo<BadgeProps>(({variant, children}) => {
   return (
     <div className={styles.root}>
       <div className={variants[variant]} />
-      <div className="rounded-borderRadiusXXL border-b2bColorsLineBase00 w-spacingXS">{children}</div>
+      <div className="rounded-borderRadiusXXL border-b2bColorsLineBase00 w-spacingXS">
+        {children}
+      </div>
     </div>
   );
 });

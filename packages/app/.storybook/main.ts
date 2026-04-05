@@ -55,7 +55,8 @@ const config: StorybookConfig = {
     reactDocgen: false,
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) => (prop.parent ? !prop.parent.fileName.includes('node_modules') : true),
+      propFilter: (prop) =>
+        prop.parent ? !prop.parent.fileName.includes('node_modules') : true,
     },
   },
 };

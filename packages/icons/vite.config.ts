@@ -5,7 +5,11 @@ import dts from 'vite-plugin-dts';
 
 import pkg from '../../package.json';
 
-const externalPackages = ['react', 'react-dom', ...Object.keys(pkg.dependencies)];
+const externalPackages = [
+  'react',
+  'react-dom',
+  ...Object.keys(pkg.dependencies),
+];
 
 export default defineConfig({
   build: {
@@ -50,15 +54,23 @@ export default defineConfig({
           await copyFile(sourceStyleCss, targetIndexCss);
 
           const resultFiles = await readdir(sourceResultDir);
-          const fontFiles = resultFiles.filter((fileName) => fileName.endsWith('.woff2'));
+
+          const fontFiles = resultFiles.filter((fileName) =>
+            fileName.endsWith('.woff2'),
+          );
 
           await Promise.all(
             fontFiles.map(async (fontFileName) => {
-              await copyFile(resolve(sourceResultDir, fontFileName), resolve(distDir, fontFileName));
+              await copyFile(
+                resolve(sourceResultDir, fontFileName),
+                resolve(distDir, fontFileName),
+              );
             }),
           );
         } catch {
-          console.error(`Не удалось скопировать артефакты из ${sourceResultDir} в ${distDir}.`);
+          console.error(
+            `Не удалось скопировать артефакты из ${sourceResultDir} в ${distDir}.`,
+          );
         }
 
         // eslint-disable-next-line no-console

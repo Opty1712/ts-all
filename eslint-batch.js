@@ -41,7 +41,9 @@ if (process.env.IS_WORKER) {
 
     for (let i = 0; i < files.length; i += batchSize) {
       const batch = files.slice(i, i + batchSize);
-      console.log(`Обработка батча ${i / batchSize + 1} (${batch.length} файлов)`);
+      console.log(
+        `Обработка батча ${i / batchSize + 1} (${batch.length} файлов)`,
+      );
 
       await new Promise((resolve, reject) => {
         const child = fork(__filename, [], {
@@ -72,7 +74,9 @@ if (process.env.IS_WORKER) {
       console.log('\n==== Сводка ошибок ESLint ====\n');
 
       allErrors.forEach((err) => {
-        console.log(`${err.filePath}:${err.line}:${err.column} - ${err.message} (${err.ruleId})`);
+        console.log(
+          `${err.filePath}:${err.line}:${err.column} - ${err.message} (${err.ruleId})`,
+        );
       });
 
       console.log(`\nВсего ошибок: ${allErrors.length}`);

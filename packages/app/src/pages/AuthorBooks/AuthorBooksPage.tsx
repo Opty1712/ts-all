@@ -10,7 +10,11 @@ import {Link, useRoute} from 'wouter';
 export const AuthorBooksPage = observer(() => {
   const {$booksStore} = useStores();
   const {t} = useTranslation();
-  const [, params] = useRoute(APP_ROUTES['/authors/author/:authorId/books'].path);
+
+  const [, params] = useRoute(
+    APP_ROUTES['/authors/author/:authorId/books'].path,
+  );
+
   const authorId = params?.authorId;
 
   useEffect(() => {
@@ -34,7 +38,9 @@ export const AuthorBooksPage = observer(() => {
       <h1>{t('Книги автора')}</h1>
       <ul className={pageListStyles.list}>
         {$booksStore.getAuthorBooks.data?.map((book) => {
-          const bookPath = APP_ROUTES['/authors/author/:authorId/books/:bookId'].getDynamic({
+          const bookPath = APP_ROUTES[
+            '/authors/author/:authorId/books/:bookId'
+          ].getDynamic({
             authorId,
             bookId: book.id,
           });
@@ -47,18 +53,24 @@ export const AuthorBooksPage = observer(() => {
               <FavoriteButton
                 isFavorite={book.isFavorite}
                 onClick={() => {
-                  $booksStore.updateBookFavorite.run({id: book.id, isFavorite: !book.isFavorite}).then((result) => {
-                    if (result.status === 'success') {
-                      $booksStore.getAuthorBooks.run({authorId});
-                    }
-                  });
+                  $booksStore.updateBookFavorite
+                    .run({id: book.id, isFavorite: !book.isFavorite})
+                    .then((result) => {
+                      if (result.status === 'success') {
+                        $booksStore.getAuthorBooks.run({authorId});
+                      }
+                    });
                 }}
               />
             </li>
           );
         })}
       </ul>
-      <p>{t('Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.')}</p>
+      <p>
+        {t(
+          'Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.',
+        )}
+      </p>
     </section>
   );
 });

@@ -23,7 +23,9 @@ export const AuthorsPage = observer(() => {
 
   const filteredAuthors =
     ALLOWED_AUTHORS_ID.length > 0
-      ? ($authorsStore.getAuthors.data ?? []).filter((author) => ALLOWED_AUTHORS_ID.includes(author.id))
+      ? ($authorsStore.getAuthors.data ?? []).filter((author) =>
+          ALLOWED_AUTHORS_ID.includes(author.id),
+        )
       : ($authorsStore.getAuthors.data ?? []);
 
   return (
@@ -31,7 +33,9 @@ export const AuthorsPage = observer(() => {
       <h1>{t('Авторы')}</h1>
       <ul className={pageListStyles.list}>
         {filteredAuthors.map((author) => {
-          const authorPath = APP_ROUTES['/authors/author/:authorId'].getDynamic(author.id);
+          const authorPath = APP_ROUTES['/authors/author/:authorId'].getDynamic(
+            author.id,
+          );
 
           return (
             <li key={author.id} className={pageListStyles.listItem}>
@@ -59,7 +63,11 @@ export const AuthorsPage = observer(() => {
           'На этой странице автор «Depreacted By Feature Toggle Service» исключен через feature toggle, поэтому вы его не увидите, хотя с бэка он приходит.',
         )}
       </p>
-      <p>{t('Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.')}</p>
+      <p>
+        {t(
+          'Нажмите на иконку рядом с автором или книгой, чтобы посмотреть работу апдейтера.',
+        )}
+      </p>
     </section>
   );
 });

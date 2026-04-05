@@ -49,7 +49,11 @@ module.exports = [
         ecmaFeatures: {
           jsx: true,
         },
-        project: ['./tsconfig.json', './tsconfig.eslint.json', './packages/*/tsconfig.eslint.json'],
+        project: [
+          './tsconfig.json',
+          './tsconfig.eslint.json',
+          './packages/*/tsconfig.eslint.json',
+        ],
         tsconfigRootDir: __dirname,
       },
     },
@@ -318,7 +322,10 @@ module.exports = [
   },
 
   {
-    files: ['packages/ui-kit/**/*.{ts,tsx,js}', 'packages/ui-kit/.storybook/preview.tsx'],
+    files: [
+      'packages/ui-kit/**/*.{ts,tsx,js}',
+      'packages/ui-kit/.storybook/preview.tsx',
+    ],
     plugins: {compat},
     rules: uiKitRules,
   },
