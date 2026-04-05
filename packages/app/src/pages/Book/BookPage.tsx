@@ -37,18 +37,14 @@ export const BookPage = observer(() => {
     $booksStore.getBook.run({authorId, bookId});
   }, [$booksStore, authorId, bookId]);
 
-  if (!authorId || !bookId) {
+  const book = $booksStore.getBook.data;
+
+  if (!authorId || !bookId || !book) {
     return <p>{t('Книга не найдена')}</p>;
   }
 
   if ($booksStore.getBook.isLoading) {
     return <p>{t('Загрузка книги...')}</p>;
-  }
-
-  const book = $booksStore.getBook.data;
-
-  if (!book) {
-    return <p>{t('Книга не найдена')}</p>;
   }
 
   return (
