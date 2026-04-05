@@ -11,15 +11,15 @@ export const BookPage = observer(() => {
   const {$booksStore} = useStores();
   const {t} = useTranslation();
 
-  /** Выводим параметры конкретного роута */
+  /** Получаем типизированный параметр роута */
   const isDarkThemeRoute = getRouteParam(APP_ROUTES['/authors/author/:authorId/books/:bookId'], 'isDarkTheme');
 
-  /** Выводим значения конкретного роута в рантайме */
+  /** Получаем параметры из URL в рантайме */
   const [, params] = useRoute(APP_ROUTES['/authors/author/:authorId/books/:bookId'].path);
   const authorId = params?.authorId || '';
   const bookId = params?.bookId || '';
 
-  /** Собираем динамический роут */
+  /** Собираем безопасный динамический путь */
   const bookPath = APP_ROUTES['/authors/author/:authorId/books/:bookId'].getDynamic({
     authorId,
     bookId,
