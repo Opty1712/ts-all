@@ -66,9 +66,14 @@ function getDtsClassPosition(line) {
   if (readonlyMatch) {
     const className = readonlyMatch[1];
     const generatedColumn = line.indexOf(`"${className}"`);
+    const declarationColumn = line.search(/\S/);
 
     if (generatedColumn !== -1) {
-      return {className, generatedColumn};
+      return {
+        className,
+        generatedColumn,
+        declarationColumn: declarationColumn === -1 ? generatedColumn : declarationColumn,
+      };
     }
   }
 
@@ -80,16 +85,55 @@ function getDtsClassPosition(line) {
 
   const className = exportMatch[1];
   const generatedColumn = line.indexOf(className, exportMatch.index);
+  const declarationColumn = line.search(/\S/);
 
   if (generatedColumn === -1) {
     return null;
   }
 
-  return {className, generatedColumn};
+  return {
+    className,
+    generatedColumn,
+    declarationColumn: declarationColumn === -1 ? generatedColumn : declarationColumn,
+  };
+}
+
+function pushUniqueMapping(entries, entry) {
+  if (
+    entries.some(
+      (existingEntry) =>
+        existingEntry.generatedColumn === entry.generatedColumn &&
+        existingEntry.cssLine === entry.cssLine &&
+        existingEntry.cssColumn === entry.cssColumn,
+    )
+  ) {
+    return;
+  }
+
+  entries.push(entry);
 }
 
 function buildMappings(dtsLines, classPositionByName) {
-  const mappingsByLine = new Array(dtsLines.length).fill('');
+  const mappingsByLine = new Array(dtsLines.length).fill(null).map(() => []);
+  let previousCssPosition = null;
+
+  if (dtsLines.length) {
+    pushUniqueMapping(mappingsByLine[0], {
+      cssLine: 0,
+      cssColumn: 0,
+      generatedColumn: 0,
+    });
+
+    const stylesColumn = dtsLines[0].indexOf('styles');
+
+    if (stylesColumn !== -1) {
+      pushUniqueMapping(mappingsByLine[0], {
+        cssLine: 0,
+        cssColumn: 0,
+        generatedColumn: stylesColumn,
+      });
+    }
+  }
 
   for (let i = 0; i < dtsLines.length; i += 1) {
     const dtsPosition = getDtsClassPosition(dtsLines[i]);
@@ -104,38 +148,67 @@ function buildMappings(dtsLines, classPositionByName) {
       continue;
     }
 
-    mappingsByLine[i] = {
+    /**
+     * Some IDEs resolve CSS-module definitions using the start of the current
+     * declaration span, others use the exclusive end of the previous span,
+     * which lands at column 0 of the next line. Emit both mappings so both
+     * lookup strategies land on the expected selector.
+     */
+    if (previousCssPosition) {
+      pushUniqueMapping(mappingsByLine[i], {
+        cssLine: previousCssPosition.line,
+        cssColumn: previousCssPosition.column,
+        generatedColumn: 0,
+      });
+    }
+
+    pushUniqueMapping(mappingsByLine[i], {
+      cssLine: cssPosition.line,
+      cssColumn: cssPosition.column,
+      generatedColumn: previousCssPosition ? dtsPosition.declarationColumn : 0,
+    });
+
+    pushUniqueMapping(mappingsByLine[i], {
       cssLine: cssPosition.line,
       cssColumn: cssPosition.column,
       generatedColumn: dtsPosition.generatedColumn,
-    };
+    });
+
+    previousCssPosition = cssPosition;
   }
 
   let prevSource = 0;
   let prevSourceLine = 0;
   let prevSourceColumn = 0;
 
-  const mappings = mappingsByLine.map((entry) => {
-    if (!entry) {
+  const mappings = mappingsByLine.map((entries) => {
+    if (!entries.length) {
       return '';
     }
 
-    const generatedColumn = entry.generatedColumn;
-    const source = 0;
-    const sourceLine = entry.cssLine;
-    const sourceColumn = entry.cssColumn;
+    let prevGeneratedColumn = 0;
 
-    const segment =
-      encodeVlq(generatedColumn) +
-      encodeVlq(source - prevSource) +
-      encodeVlq(sourceLine - prevSourceLine) +
-      encodeVlq(sourceColumn - prevSourceColumn);
+    return entries
+      .map((entry) => {
+        const generatedColumnDelta = entry.generatedColumn - prevGeneratedColumn;
+        const source = 0;
+        const sourceLine = entry.cssLine;
+        const sourceColumn = entry.cssColumn;
 
-    prevSource = source;
-    prevSourceLine = sourceLine;
-    prevSourceColumn = sourceColumn;
+        const segment =
+          encodeVlq(generatedColumnDelta) +
+          encodeVlq(source - prevSource) +
+          encodeVlq(sourceLine - prevSourceLine) +
+          encodeVlq(sourceColumn - prevSourceColumn);
 
-    return segment;
+        prevGeneratedColumn = entry.generatedColumn;
+        prevSource = source;
+        prevSourceLine = sourceLine;
+        prevSourceColumn = sourceColumn;
+
+        return segment;
+      })
+      .join(',');
   });
 
   return mappings.join(';');
@@ -144,7 +217,7 @@ function buildMappings(dtsLines, classPositionByName) {
 function buildClassPositionMap(cssContent) {
   const classPositionByName = new Map();
   const lines = cssContent.split('\n');
-  const classRe = /\.([A-Za-z0-9_-]+)\b/g;
+  const classRe = /(?<![A-Za-z0-9_-])\.([A-Za-z_-][A-Za-z0-9_-]*)\b/g;
 
   for (let i = 0; i < lines.length; i += 1) {
     const line = lines[i];
@@ -159,7 +232,7 @@ function buildClassPositionMap(cssContent) {
 
       classPositionByName.set(className, {
         line: i,
-        column: match.index + 1,
+        column: match.index,
       });
     }
   }
