@@ -6,7 +6,7 @@
   "author": "Andrey Edunov",
   "license": "ISC",
   "scripts": {
-    "demo": "npm run typed-css:remove -w @demo/app && npm run typed-css:remove -w @demo/ui-kit && node -e 'const fs=require(\"fs\");const p=\"stylelint.config.mjs\";const lines=fs.readFileSync(p,\"utf8\").split(\"\\n\");const line=lines[7] || \"\";if (!line.trimStart().startsWith(\"//\")) lines[7]=line.replace(/^(\\s*)/, \"$1// \");fs.writeFileSync(p,lines.join(\"\\n\"));'",
+    "demo": "rimraf .idea/liveTemplates/demo-css-vars.xml && rimraf .vscode/demo-css-vars.code-snippets && npm run typed-css:remove -w @demo/app && npm run typed-css:remove -w @demo/ui-kit && node -e 'const fs=require(\"fs\");const p=\"stylelint.config.mjs\";const lines=fs.readFileSync(p,\"utf8\").split(\"\\n\");const line=lines[7] || \"\";if (!line.trimStart().startsWith(\"//\")) lines[7]=line.replace(/^(\\s*)/, \"$1// \");fs.writeFileSync(p,lines.join(\"\\n\"));'",
     "lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:styles",
     "lint:fix": "npm run lint:prettier:fix && npm run lint:eslint:fix && npm run lint:styles:fix",
     "lint:prettier": "prettier -c \"./**/*.{js,css,scss,ts,tsx,json,html,md}\"",
