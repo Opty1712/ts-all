@@ -1,7 +1,9 @@
 /** @type {import("stylelint").Config} */
 export default {
   extends: ['stylelint-config-standard', 'stylelint-config-standard-scss'],
-  plugins: ['./packages/common-utils/scripts/stylelint-plugin-css-vars/plugin.js'],
+  plugins: [
+    './packages/common-utils/scripts/stylelint-plugin-css-vars/plugin.js',
+  ],
   rules: {
     'css-vars/valid-css-vars': true,
     'custom-property-pattern': null,
@@ -9,7 +11,13 @@ export default {
     'scss/at-rule-no-unknown': [
       true,
       {
-        ignoreAtRules: ['tailwind', 'apply', 'variants', 'responsive', 'screen'],
+        ignoreAtRules: [
+          'tailwind',
+          'apply',
+          'variants',
+          'responsive',
+          'screen',
+        ],
       },
     ],
   },
