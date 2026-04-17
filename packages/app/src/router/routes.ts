@@ -9,7 +9,13 @@ const routes = {
       '/:authorId': {
         '/books': {
           params: {isDarkTheme: true},
-          '/:bookId': {params: {isDarkTheme: true}},
+          '/:bookId': {
+            params: {
+              isDarkTheme: true,
+              uid: '104533-3445',
+              deprecatedAuthors: ['John Smith'],
+            },
+          },
         },
       },
     },
@@ -110,7 +116,7 @@ type GetParams<T, P extends string> = P extends keyof T
   : P extends `/${infer Head}/${infer Tail}`
     ? `/${Head}` extends keyof T
       ? T[`/${Head}`] extends object
-        ? GetOwnParams<T[`/${Head}`]> & GetParams<T[`/${Head}`], `/${Tail}`>
+        ? GetParams<T[`/${Head}`], `/${Tail}`>
         : {}
       : {}
     : {};
