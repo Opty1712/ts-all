@@ -6,7 +6,7 @@ import {BasicClass} from './basicClass';
 
 type LayoutDataTestIds = typeof layoutDataTestIds;
 
-export class Layout extends BasicClass<LayoutDataTestIds> {
+export class LayoutTest extends BasicClass<LayoutDataTestIds> {
   public constructor(page: Page) {
     super(page, layoutDataTestIds);
   }
@@ -15,7 +15,7 @@ export class Layout extends BasicClass<LayoutDataTestIds> {
 test('layout uses typed Playwright locators from shared test ids', async ({
   page,
 }) => {
-  const layout = new Layout(page);
+  const layout = new LayoutTest(page);
 
   await page.goto('/');
   await layout.locators.menuTopBooks.click();
