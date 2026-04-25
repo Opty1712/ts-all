@@ -2,6 +2,8 @@ import {APP_ROUTES} from '@/router/routes';
 import {Trans, useTranslation} from 'react-i18next';
 import {Link} from 'wouter';
 
+import {t} from '../../i18n/i18nHelper';
+
 export const Home = () => {
   const {t} = useTranslation();
 
@@ -17,3 +19,6 @@ export const Home = () => {
     </section>
   );
 };
+
+/** Плюс реактивная t без React */
+t('RUB');
