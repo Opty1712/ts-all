@@ -1,6 +1,6 @@
 import {generateTestIds} from '@demo/common-utils';
 
-export const layoutDataTestIdsList = [
+const layoutDataTestIdsList = [
   'menuTopHome',
   'menuTopAuthors',
   'menuTopBooks',
