@@ -93,6 +93,7 @@ npm run css
 - `tailwindDarkColors.json` - темная тема
 - `TWClassNames.ts` - union-типы допустимых Tailwind/CSS token-классов
 - `TWClassNames.cjs` используется Stylelint-плагином как allow-list CSS-переменных
+- `CSSVariablesByTheme.ts` - объект runtime-значений CSS-переменных по темам и типы `CssVariableName` / `Theme`
 - `types.ts` - union токенов цветов (`FigmaColorToken`), может использоваться для строгой типизации токен-пропсов
 
 Сгенерированные файлы не редактируются вручную.
@@ -129,6 +130,23 @@ npm run css
 - `src/styles/generated/TWClassNames.cjs`
 
 Этот файл читает Stylelint-плагин, и на его основе валидирует `var(--token)` в стилях.
+
+Для runtime-доступа к значениям дизайн-токенов генерируется отдельная карта:
+
+- `src/styles/generated/CSSVariablesByTheme.ts`
+
+Она содержит значения CSS-переменных для `light` и `dark` тем, а также выводит типы:
+
+- `CssVariableName` - допустимые имена CSS-переменных (`--b2bColorsFillAccent`, `--spacingM` и т.д.)
+- `Theme` - допустимые темы из ключей generated-объекта
+
+Хук `useCssVariable(variableName)` принимает только `CssVariableName`, отслеживает изменение `class` на `document.documentElement` (`html`) и берет значение из `CSSVariablesByTheme.ts`, без `getComputedStyle`. Если на `html` нет theme-класса или нет класса, совпадающего с ключом generated-объекта, используется дефолтная `light` тема.
+
+Пример:
+
+```ts
+const accentColor = useCssVariable('--b2bColorsFillAccent');
+```
 
 После `npm run build` автоматически вызывается генерация автокомплита CSS vars:
 

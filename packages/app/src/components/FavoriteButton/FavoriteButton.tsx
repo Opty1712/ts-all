@@ -1,4 +1,5 @@
 import {IconFavorite20, IconFavoriteFilled20} from '@demo/icons';
+import {useCssVariable} from '@demo/ui-kit';
 import {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 
@@ -14,6 +15,10 @@ export const FavoriteButton: FC<FavoriteButtonProps> = ({
   onClick,
 }) => {
   const {t} = useTranslation();
+
+  /** Чисто для демо, показать работу хука `useCssVariable` */
+  // eslint-disable-next-line no-console
+  console.log(useCssVariable('--b2bColorsFillAccent'));
 
   return (
     <button

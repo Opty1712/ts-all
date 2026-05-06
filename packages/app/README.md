@@ -178,6 +178,11 @@ npm run storybook
   - `src/main.tsx` -> `@demo/ui-kit/lib/style.css`
 - подключение иконок:
   - `src/main.tsx` -> `@demo/icons/dist/style.css`
+- runtime-доступ к значениям дизайн-токенов:
+  - `src/components/FavoriteButton/FavoriteButton.tsx` -> `useCssVariable('--b2bColorsFillAccent')`
+  - хук типизирует имя CSS-переменной через generated-объект из `@demo/ui-kit`
+  - значение берется из карты токенов по теме, без `getComputedStyle`
+  - тема определяется по классу на `html`: `dark` или дефолтная `light`
 - подробности по этим слоям:
   - [`packages/ui-kit/README.md`](../ui-kit/README.md)
   - [`packages/icons/README.md`](../icons/README.md)

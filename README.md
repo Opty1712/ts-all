@@ -19,7 +19,7 @@
 - Common Utils: [`packages/common-utils/README.md`](packages/common-utils/README.md)
 - Config (`AppConfig`, `window._ENV_`, `global.d.ts`): [`packages/app/README.md`](packages/app/README.md)
 - Design Tokens (Figma -> Tailwind): [`packages/ui-kit/README.md`](packages/ui-kit/README.md)
-- CSS Variables (валидация + автокомплит): [`packages/ui-kit/README.md`](packages/ui-kit/README.md), [`packages/common-utils/README.md`](packages/common-utils/README.md)
+- CSS Variables (валидация + автокомплит + runtime-доступ к токенам): [`packages/ui-kit/README.md`](packages/ui-kit/README.md), [`packages/app/README.md`](packages/app/README.md), [`packages/common-utils/README.md`](packages/common-utils/README.md)
 - CSS Modules (`.d.ts` + `.d.ts.map`): [`packages/ui-kit/README.md`](packages/ui-kit/README.md), [`packages/app/README.md`](packages/app/README.md), [`packages/common-utils/README.md`](packages/common-utils/README.md)
 - Test Locators (`data-testid` контракт): [`packages/app/README.md`](packages/app/README.md), [`packages/e2e-tests/README.md`](packages/e2e-tests/README.md)
 - API (typed client + доменные слои): [`packages/app/README.md`](packages/app/README.md)
@@ -57,6 +57,8 @@ npm i
 
 - В stylelint подключено правило `css-vars/valid-css-vars`.
 - Валидные токены берутся из `packages/ui-kit/src/styles/generated/TWClassNames.cjs`.
+- Runtime-значения дизайн-токенов по темам генерируются в `packages/ui-kit/src/styles/generated/CSSVariablesByTheme.ts` и используются хуком `useCssVariable`.
+- `useCssVariable('--token')` не вызывает `getComputedStyle`: значение берется из сгенерированной карты, тема определяется по классу на `html` (`dark` или дефолтная `light`).
 - Исключения лежат в `packages/common-utils/scripts/stylelint-plugin-css-vars/ignoredCSSVars.js`.
 - Диагностика новых/подозрительных переменных:
 

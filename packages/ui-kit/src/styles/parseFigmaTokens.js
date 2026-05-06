@@ -30,6 +30,7 @@ async function parseTokensAndGenerateFiles() {
   const tailwindInitialFile = `${generatedDir}/tailwindInitialFile.css`;
   const figmaTokensDTSFile = `${generatedDir}/types.ts`;
   const TWClassNamesFile = `${generatedDir}/TWClassNames.ts`;
+  const CSSVariablesByThemeFile = `${generatedDir}/CSSVariablesByTheme.ts`;
 
   /** Маппинг ключей темы на имя палета, чтобы получить tailwind классы */
   const borderRadius = 'borderRadius';
@@ -456,6 +457,59 @@ async function parseTokensAndGenerateFiles() {
     }, '');
   }
 
+  /** Конвертируем палет в объект CSS переменных, пример:
+   * {"accent.green.100": "#faff00"} => {"--accentGreen100": "#faff00"}
+   * */
+  function convertPaletteToCSSVarValues(palette) {
+    return Object.entries(palette).reduce((accumulator, [key, value]) => {
+      accumulator[`--${convertToCamelCase(key)}`] = value;
+
+      return accumulator;
+    }, {});
+  }
+
+  /** Генерируем объект CSS переменных по темам для быстрого runtime-доступа */
+  function saveCSSVariablesByTheme({
+    tailwindLightColors,
+    tailwindDarkColors,
+    jsonTokens,
+  }) {
+    const {spacing, borderRadius, shadows, colors} = jsonTokens;
+
+    const commonVariables = {
+      ...convertPaletteToCSSVarValues(generateTokenColors({spacing}, '')),
+      ...convertPaletteToCSSVarValues(generateTokenColors({borderRadius}, '')),
+      ...convertPaletteToCSSVarValues(
+        generateTokenColors(colors.baseColorsPalette, ''),
+      ),
+    };
+
+    const cssVariablesByTheme = {
+      light: {
+        ...commonVariables,
+        ...convertPaletteToCSSVarValues(tailwindLightColors),
+        ...convertPaletteToCSSVarValues(
+          generateTokenColors({Elevation: shadows.lightShadows}, 'boxShadow.'),
+        ),
+      },
+      dark: {
+        ...commonVariables,
+        ...convertPaletteToCSSVarValues(tailwindDarkColors),
+        ...convertPaletteToCSSVarValues(
+          generateTokenColors({Elevation: shadows.darkShadows}, 'boxShadow.'),
+        ),
+      },
+    };
+
+    const content = `export const cssVariablesByTheme = ${JSON.stringify(cssVariablesByTheme, null, 2)} as const;
+
+export type Theme = keyof typeof cssVariablesByTheme;
+export type CssVariableName = keyof typeof cssVariablesByTheme.light;
+`;
+
+    writeFileSync(CSSVariablesByThemeFile, content);
+  }
+
   /** Получить финальные CSS переменные с двумя темами и другими токенами */
   function saveCSSVars({tailwindLightColors, tailwindDarkColors, jsonTokens}) {
     const base = readFileSync(tailwindBaseCSS, {encoding: 'utf-8'});
@@ -548,6 +602,12 @@ html.dark {${convertPaletteToCSSVars(tailwindDarkColors)}
     );
 
     saveCSSVars({
+      tailwindLightColors,
+      tailwindDarkColors,
+      jsonTokens,
+    });
+
+    saveCSSVariablesByTheme({
       tailwindLightColors,
       tailwindDarkColors,
       jsonTokens,
