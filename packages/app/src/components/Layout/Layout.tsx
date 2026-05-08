@@ -1,4 +1,4 @@
-import {APP_ROUTES, getRouteByPath, getRouteParam} from '@/router/routes';
+import {APP_ROUTES, getRouteByPath, getRouteConfig} from '@/router/routes';
 import {useStores} from '@/stores/StoresProvider';
 import classnames from 'classnames';
 import {observer} from 'mobx-react-lite';
@@ -19,7 +19,7 @@ export const Layout: FC<PropsWithChildren> = observer(({children}) => {
     $ftStore.getFTConfig.data.DARK_THEME_ENABLED;
 
   const isDarkThemeRoute = currentRoute
-    ? getRouteParam(currentRoute, 'isDarkTheme')
+    ? getRouteConfig(currentRoute, 'isDarkTheme')
     : false;
 
   const isDarkTheme = isDarkThemeAllowedByToggle && isDarkThemeRoute;

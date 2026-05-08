@@ -15,10 +15,7 @@ export const FavoriteButton: FC<FavoriteButtonProps> = ({
   onClick,
 }) => {
   const {t} = useTranslation();
-
-  /** Чисто для демо, показать работу хука `useCssVariable` */
-  // eslint-disable-next-line no-console
-  console.log(useCssVariable('--b2bColorsFillAccent'));
+  const hex = useCssVariable('--b2bColorsFillAccent');
 
   return (
     <button
@@ -26,6 +23,7 @@ export const FavoriteButton: FC<FavoriteButtonProps> = ({
       className={styles.favoriteButton}
       aria-label={isFavorite ? t('Убрать из избранного') : t('В избранное')}
       onClick={onClick}
+      style={{color: hex}}
     >
       {isFavorite ? <IconFavoriteFilled20 /> : <IconFavorite20 />}
     </button>

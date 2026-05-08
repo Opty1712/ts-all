@@ -1,5 +1,5 @@
 import {FavoriteButton} from '@/components/FavoriteButton/FavoriteButton';
-import {APP_ROUTES, getRouteParam} from '@/router/routes';
+import {APP_ROUTES, getRouteConfig} from '@/router/routes';
 import {useStores} from '@/stores/StoresProvider';
 import {Badge} from '@demo/ui-kit';
 import {observer} from 'mobx-react-lite';
@@ -12,7 +12,7 @@ export const BookPage = observer(() => {
   const {t} = useTranslation();
 
   /** Получаем типизированный параметр роута */
-  const isDarkThemeRoute = getRouteParam(
+  const isDarkThemeRoute = getRouteConfig(
     APP_ROUTES['/authors/author/:authorId/books/:bookId'],
     'isDarkTheme',
   );

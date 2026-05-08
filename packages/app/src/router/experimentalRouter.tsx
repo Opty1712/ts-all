@@ -15,7 +15,7 @@ import {Home} from '../pages/Home/Home';
  * Экспериментальный вариант типизированного роутинга для демо-проекта.
  *
  * В отличие от `routes.ts`, здесь route-конфиг хранит не только путь и
- * пользовательские `params`, но и обязательный `Component` для каждого
+ * пользовательские `config`, но и обязательный `Component` для каждого
  * реального экрана. За счет этого `Router` ниже строится из того же дерева
  * роутов, а список `<Route />` не нужно поддерживать вручную отдельно.
  *
@@ -33,17 +33,17 @@ const routes = {
     Component: AuthorsPage,
     '/books': {
       Component: BooksPage,
-      params: {isDarkTheme: true},
+      config: {isDarkTheme: true},
     },
     '/author': {
       '/:authorId': {
         Component: AuthorPage,
         '/books': {
           Component: AuthorBooksPage,
-          params: {isDarkTheme: true},
+          config: {isDarkTheme: true},
           '/:bookId': {
             Component: BookPage,
-            params: {
+            config: {
               isDarkTheme: true,
               uid: '104533-3445',
               deprecatedAuthors: ['John Smith'],
@@ -59,7 +59,7 @@ const routes = {
  * Типизированные роуты, каждый имеет:
  * - APP_ROUTES['/'].path; → статический урл
  * - APP_ROUTES['/'].getDynamic → динамический урл
- * - APP_ROUTES['/'].params → параметры роутера
+ * - APP_ROUTES['/'].config → параметры роутера
  */
 export const APP_ROUTES = flattenRoutes(routes) as AppRoutes;
 
@@ -118,37 +118,40 @@ export const getRouteByPath = (
 };
 
 /**
- * Возвращает значение параметра роута из `route.params`.
+ * Возвращает значение параметра роута из `route.config`.
  * Если параметр не задан для конкретного роута, вернет `undefined`.
  */
-export function getRouteParam<
+export function getRouteConfig<
   R extends ValueOf<AppRoutes>,
-  P extends keyof R['params'],
->(route: R, param: P): R['params'][P];
-export function getRouteParam<P extends RouteParamKey>(
+  P extends keyof R['config'],
+>(route: R, param: P): R['config'][P];
+export function getRouteConfig<P extends RouteParamKey>(
   route: ValueOf<AppRoutes>,
   param: P,
 ): RouteParamValue<P> | undefined;
 
-export function getRouteParam(route: ValueOf<AppRoutes>, param: RouteParamKey) {
-  const params = route?.params as
+export function getRouteConfig(
+  route: ValueOf<AppRoutes>,
+  param: RouteParamKey,
+) {
+  const config = route?.config as
     | Partial<Record<RouteParamKey, unknown>>
     | undefined;
 
-  return params?.[param];
+  return config?.[param];
 }
 
 type RouteComponent = ComponentType;
-type RouteMetaKey = 'Component' | 'params';
+type RouteMetaKey = 'Component' | 'config';
 
 type RouteNode = (
   | {
       Component: RouteComponent;
-      params?: Record<string, unknown>;
+      config?: Record<string, unknown>;
     }
   | {
       Component?: never;
-      params?: never;
+      config?: never;
     }
 ) & {
   [K in `/${string}`]?: RouteNode;
@@ -160,7 +163,7 @@ type RoutesConfig = {
 
 type FlattenableRouteNode = {
   Component?: RouteComponent;
-  params?: Record<string, unknown>;
+  config?: Record<string, unknown>;
 } & {
   [K in `/${string}`]?: FlattenableRouteNode;
 };
@@ -186,14 +189,14 @@ type Flatten<T, Prefix extends string = ''> = {
 
 export type AppRouteLocations = Flatten<typeof routes>;
 
-type GetOwnParams<T> = T extends {params: infer Params} ? Params : {};
+type GetOwnconfig<T> = T extends {config: infer config} ? config : {};
 
-type GetParams<T, P extends string> = P extends keyof T
-  ? GetOwnParams<T[P]>
+type Getconfig<T, P extends string> = P extends keyof T
+  ? GetOwnconfig<T[P]>
   : P extends `/${infer Head}/${infer Tail}`
     ? `/${Head}` extends keyof T
       ? T[`/${Head}`] extends object
-        ? GetParams<T[`/${Head}`], `/${Tail}`>
+        ? Getconfig<T[`/${Head}`], `/${Tail}`>
         : {}
       : {}
     : {};
@@ -210,26 +213,26 @@ type GetComponent<T, P extends string> = P extends keyof T
       : never
     : never;
 
-type ExtractParams<T extends string> =
+type Extractconfig<T extends string> =
   T extends `${string}:${infer Param}/${infer Rest}`
-    ? Param | ExtractParams<Rest>
+    ? Param | Extractconfig<Rest>
     : T extends `${string}:${infer Param}`
       ? Param
       : never;
 
 type ParamObject<T extends string> = {
-  [K in ExtractParams<T>]: string;
+  [K in Extractconfig<T>]: string;
 };
 
 type DynamicPath<T extends string> =
-  ExtractParams<T> extends never
+  Extractconfig<T> extends never
     ? () => string
-    : (params: ParamObject<T> | string | Array<string>) => string;
+    : (config: ParamObject<T> | string | Array<string>) => string;
 
 export type AppRoutes = {
   [K in AppRouteLocations]: {
     path: K;
-    params: GetParams<typeof routes, K>;
+    config: Getconfig<typeof routes, K>;
     Component: GetComponent<typeof routes, K>;
     getDynamic: DynamicPath<K>;
   };
@@ -240,15 +243,15 @@ function flattenRoutes<T extends object>(
   base = '',
 ): Record<
   string,
-  {path: string; params: any; Component: RouteComponent; getDynamic: any}
+  {path: string; config: any; Component: RouteComponent; getDynamic: any}
 > {
   const result: Record<
     string,
-    {path: string; params: any; Component: RouteComponent; getDynamic: any}
+    {path: string; config: any; Component: RouteComponent; getDynamic: any}
   > = {};
 
   for (const key in routes) {
-    if (key === 'Component' || key === 'params') continue;
+    if (key === 'Component' || key === 'config') continue;
 
     const fullPath = base
       ? `${base}${key.startsWith('/') ? key : `/${key}`}`
@@ -281,7 +284,7 @@ function flattenRoutes<T extends object>(
       result[fullPath] = {
         path: fullPath,
         Component: entry.Component,
-        params: entry.params ?? {},
+        config: entry.config ?? {},
         getDynamic: getDynamic(fullPath),
       };
     }
@@ -305,7 +308,7 @@ function isRouteEntry(
 type ValueOf<T> = T[keyof T];
 type DeepRouteParamKeys<T> = T extends object
   ? {
-      [K in keyof T]: K extends 'params'
+      [K in keyof T]: K extends 'config'
         ? keyof T[K]
         : K extends 'Component'
           ? never
@@ -318,8 +321,8 @@ type RouteParamKey = DeepRouteParamKeys<typeof routes>;
 
 type RouteParamValue<P extends RouteParamKey> = Extract<
   ValueOf<AppRoutes>,
-  {params: Record<P, unknown>}
->['params'][P];
+  {config: Record<P, unknown>}
+>['config'][P];
 
 const normalizePathname = (pathname: string): string => {
   const normalizedPathname = pathname.split('?')[0].split('#')[0] || '/';

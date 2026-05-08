@@ -108,7 +108,7 @@ npm run storybook
   - вывод `APP_ROUTES`
   - `getDynamic(params)` для динамических сегментов: принимает `string` или типизированный объект параметров и собирает корректный URL
   - `getRouteByPath(pathname)` - возвращает описание роута из `APP_ROUTES` для текущего URL (с поддержкой динамических сегментов)
-  - `getRouteParam(route, param)` - безопасно читает параметр из `route.params` с типизацией ключа и значения
+  - `getRouteConfig(route, config)` - безопасно читает параметр из `route.config` с типизацией ключа и значения
 - использование:
   - `src/router/Router.tsx`
   - страницы и `Layout` используют `APP_ROUTES` вместо строковых URL
